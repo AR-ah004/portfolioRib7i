@@ -1,10 +1,70 @@
 /**
  * Ribhi Queder — Commercial Portfolio Engine
  * Three.js WebGL iPhone 17 Pro Max Physics, Interactive Split Grade,
- * Package Cost Estimator (JOD Bundles), Dynamic Availability Calendar, and Case Study View.
+ * Live Dynamic Synchronization with Admin LocalStorage (Reels, Stills & Packages),
+ * Dynamic Availability Calendar, and Case Study Modal.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+
+  /* ==========================================================================
+     0. DYNAMIC SYNCHRONIZATION WITH ADMIN LOCALSTORAGE (REELS, STILLS, PACKAGES)
+     ========================================================================== */
+  const storedPortfolio = JSON.parse(localStorage.getItem('rq_portfolio') || 'null');
+  const storedPackages = JSON.parse(localStorage.getItem('rq_packages') || 'null');
+
+  // 1. Dynamic Reels Sync into Clips Carousel
+  if (storedPortfolio) {
+    const reelsCarousel = document.getElementById('clipsCarousel');
+    const activeReels = storedPortfolio.filter(m => m.type === 'reels' && !m.isDeleted);
+
+    if (reelsCarousel && activeReels.length > 0) {
+      reelsCarousel.innerHTML = activeReels.map(m => `
+        <div class="clip-card magnetic-target"
+             data-title="${m.title || 'Commercial Reel'}"
+             data-category="${m.category || 'Macro Demo'}"
+             data-video-src="${m.url}"
+             data-views="${m.views || '150K Organic'}"
+             data-retention="${m.retention || '84% 3s Hold'}"
+             data-desc="${m.desc || 'High-retention mobile commercial engineered for direct conversions.'}"
+             data-gear="${m.gear || 'Sony FX3 Cinema Line'}"
+             data-software="${m.software || 'DaVinci Resolve Studio'}"
+             data-objective="${m.objective || 'Accelerate direct consumer conversions.'}"
+             data-hook="${m.hook || 'Pattern interrupt designed for feed capture.'}"
+             data-roi="${m.roi || '+35% organic engagement acceleration.'}">
+          <div class="clip-media-box">
+            <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
+              <source src="${m.url}" type="video/mp4">
+            </video>
+            <span class="card-badge">Inspect Strategy &nearr;</span>
+          </div>
+          <div class="clip-details">
+            <strong>${m.title}</strong>
+            <span>${m.category || 'Reel'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 2. Dynamic Stills Sync into Grid
+    const stillsGallery = document.getElementById('stillsGallery');
+    const activeStills = storedPortfolio.filter(m => m.type === 'stills' && !m.isDeleted);
+
+    if (stillsGallery && activeStills.length > 0) {
+      stillsGallery.innerHTML = activeStills.map(m => `
+        <div class="still-card" data-category="${m.category ? m.category.toLowerCase().replace(/[^a-z]/g, '') : 'product'}">
+          <div class="still-img-wrap">
+            <img src="${m.url}" alt="${m.title}" loading="lazy">
+            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+          </div>
+          <div class="still-meta">
+            <strong>${m.title}</strong>
+            <span class="format-pill">${m.category || '4:5 Feed'}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+  }
 
   /* ==========================================================================
      1. THREE.JS PROCEDURAL IPHONE 17 PRO MAX (REPLACING THE GLOBE)
@@ -160,9 +220,9 @@ document.addEventListener('DOMContentLoaded', () => {
       phoneRoot.add(ring, glass);
     };
 
-    createLens(-0.95, 2.45); // Top Primary Lens
-    createLens(-0.95, 1.85); // Bottom Telephoto Lens
-    createLens(-0.35, 2.15); // Right Ultra-Wide Lens
+    createLens(-0.95, 2.45);
+    createLens(-0.95, 1.85);
+    createLens(-0.35, 2.15);
 
     // Dual Tone Flash & LiDAR Sensor
     const flashMesh = new THREE.Mesh(
@@ -257,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       ctx.restore();
 
-      // UI Dots
+      // UI Action Dots
       ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
       ctx.beginPath();
       ctx.arc(430, 620, 18, 0, Math.PI * 2);
@@ -265,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.arc(430, 740, 18, 0, Math.PI * 2);
       ctx.fill();
 
-      // Dynamic Island Live Dot
+      // Dynamic Island Live Recording Wave
       ctx.fillStyle = '#ef4444';
       ctx.beginPath();
       ctx.arc(256, 70, 6, 0, Math.PI * 2);
@@ -285,10 +345,7 @@ document.addEventListener('DOMContentLoaded', () => {
       prevMousePos = { x: e.clientX, y: e.clientY };
     });
 
-    window.addEventListener('mouseup', () => {
-      isDragging = false;
-    });
-
+    window.addEventListener('mouseup', () => { isDragging = false; });
     canvasContainer.addEventListener('mousemove', (e) => {
       if (isDragging) {
         const deltaX = e.clientX - prevMousePos.x;
@@ -308,10 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
       prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
     }, { passive: true });
 
-    window.addEventListener('touchend', () => {
-      isDragging = false;
-    });
-
+    window.addEventListener('touchend', () => { isDragging = false; });
     canvasContainer.addEventListener('touchmove', (e) => {
       if (isDragging && e.touches[0]) {
         const deltaX = e.touches[0].clientX - prevMousePos.x;
@@ -382,59 +436,120 @@ document.addEventListener('DOMContentLoaded', () => {
       setGradePosition(e.clientX);
     });
 
-    window.addEventListener('mouseup', () => {
-      isSliding = false;
-    });
-
+    window.addEventListener('mouseup', () => { isSliding = false; });
     gradeComparison.addEventListener('mousemove', (e) => {
-      if (isSliding) {
-        setGradePosition(e.clientX);
-      }
+      if (isSliding) setGradePosition(e.clientX);
     });
 
-    // Touch Handling
     gradeComparison.addEventListener('touchstart', (e) => {
       isSliding = true;
       setGradePosition(e.touches[0].clientX);
     }, { passive: true });
 
-    window.addEventListener('touchend', () => {
-      isSliding = false;
-    });
-
+    window.addEventListener('touchend', () => { isSliding = false; });
     gradeComparison.addEventListener('touchmove', (e) => {
-      if (isSliding && e.touches[0]) {
-        setGradePosition(e.touches[0].clientX);
-      }
+      if (isSliding && e.touches[0]) setGradePosition(e.touches[0].clientX);
     }, { passive: true });
+  }
 
-    // Keyboard Accessibility
-    gradeComparison.setAttribute('tabindex', '0');
-    gradeComparison.addEventListener('keydown', (e) => {
-      const currentWidth = parseFloat(gradeFinalLayer.style.width) || 50;
-      if (e.key === 'ArrowLeft') {
-        const next = Math.max(5, currentWidth - 5);
-        gradeFinalLayer.style.width = `${next}%`;
-        gradeDivider.style.left = `${next}%`;
-      } else if (e.key === 'ArrowRight') {
-        const next = Math.min(95, currentWidth + 5);
-        gradeFinalLayer.style.width = `${next}%`;
-        gradeDivider.style.left = `${next}%`;
+  /* ==========================================================================
+     3. REELS CAROUSEL & ACCURATE COUNTER
+     ========================================================================== */
+  const carousel = document.getElementById('clipsCarousel');
+  const prevBtn = document.getElementById('prevReelBtn');
+  const nextBtn = document.getElementById('nextReelBtn');
+  const counter = document.getElementById('carouselCounter');
+
+  if (carousel && counter) {
+    const cards = carousel.querySelectorAll('.clip-card');
+    const totalCards = cards.length;
+
+    const updateAccurateCounter = () => {
+      if (!cards[0]) return;
+      const cardWidth = cards[0].offsetWidth + 24;
+      const scrollPos = carousel.scrollLeft;
+      const currentIdx = Math.min(Math.round(scrollPos / cardWidth) + 1, totalCards);
+      counter.textContent = `${String(currentIdx).padStart(2, '0')} / ${String(totalCards).padStart(2, '0')}`;
+    };
+
+    updateAccurateCounter();
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        carousel.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+    }
+
+    carousel.addEventListener('scroll', updateAccurateCounter);
+  }
+
+  /* ==========================================================================
+     4. STILLS GALLERY FILTER & LIGHTBOX ENGINE
+     ========================================================================== */
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const stillCards = document.querySelectorAll('.still-card');
+  const lightbox = document.getElementById('stillsLightbox');
+  const lightboxImg = document.getElementById('lightboxImage');
+  const lightboxCaption = document.getElementById('lightboxCaption');
+  const closeLightboxBtn = document.getElementById('closeLightboxBtn');
+
+  filterTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const filterValue = tab.getAttribute('data-filter');
+
+      document.querySelectorAll('.still-card').forEach((card) => {
+        if (filterValue === 'all' || card.getAttribute('data-category').includes(filterValue)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  document.querySelectorAll('.still-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const img = card.querySelector('img');
+      const title = card.querySelector('strong') ? card.querySelector('strong').textContent : 'Asset';
+      const format = card.querySelector('.format-pill') ? card.querySelector('.format-pill').textContent : '4:5';
+
+      if (lightbox && lightboxImg && img) {
+        lightboxImg.src = img.src;
+        lightboxCaption.textContent = `${title} (${format})`;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
+    });
+  });
+
+  const closeLightbox = () => {
+    if (lightbox) {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(() => { if (lightboxImg) lightboxImg.src = ''; }, 200);
+    }
+  };
+
+  if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
     });
   }
 
   /* ==========================================================================
-     3. INSTANT INTERACTIVE PACKAGE ESTIMATOR (JOD PACKAGES)
+     5. INSTANT INTERACTIVE PACKAGE ESTIMATOR (JOD PACKAGES)
      ========================================================================== */
-  const formatOptions = document.querySelectorAll('.format-option');
-  const speedBtns = document.querySelectorAll('.speed-btn');
-  const estPriceDisplay = document.getElementById('estPriceDisplay');
-  const estDeliverablesList = document.getElementById('estDeliverablesList');
-  const lockEstimateBtn = document.getElementById('lockEstimateBtn');
-
-  // Package Data in JOD
-  const packages = {
+  // Default packages fallback if localStorage has none
+  const defaultPackages = {
     starter: {
       name: 'Starter Reel & Stills',
       price: 70,
@@ -442,8 +557,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '2x High-Retention 9:16 Vertical Reels',
         '4x Color-Graded Location/Product Photos',
         '4K Ultra-HD Video Capture with Studio Lighting',
-        'On-Screen Dynamic Captions & Licensed Music',
-        '2 Rounds of Minor Cut Revisions'
+        'Standard 48-72h Delivery Window'
       ]
     },
     growth: {
@@ -453,43 +567,48 @@ document.addEventListener('DOMContentLoaded', () => {
         '4x High-Retention 9:16 Vertical Reels',
         '8x Color-Graded Grid & Story Photos',
         'Creative Hook & Script Concept Assistance',
-        '4K Resolution, Custom Color Grading & Captions',
         'Standard 48-72h Delivery'
       ]
     },
     halfday: {
-      name: 'Complete Commercial Shoot',
-      price: 190,
+      name: 'Commercial Shoot',
+      price: 220,
       deliverables: [
         'Complete Venue / Storefront Half-Day Production',
         '7x High-Converting Vertical Reels (Demos + Walkthroughs)',
         'Comprehensive 15+ Commercial Image Bank',
-        'Multi-angle Cinema Lighting & Sound Setup',
         'Master Audio Mixing & Priority Processing'
       ]
     },
     monthly: {
       name: 'Monthly Content Retainer',
-      price: 320,
+      price: 450,
       deliverables: [
         '12x Strategic Reels / Month (Consistent Brand Pipeline)',
         '2 Dedicated Half-Day Production Sessions',
         'Full Feed Photos Bank (4:5 & 1:1)',
-        'Dedicated Content Calendar & Topic Planning',
         'Ongoing Revisions & Priority Turnaround'
       ]
     }
   };
 
+  // Merge packages from localStorage if available
+  const packages = storedPackages ? { ...defaultPackages, ...storedPackages } : defaultPackages;
+
   let currentPackageKey = 'starter';
   let speedSurplus = 0;
   let currentSpeedLabel = 'Standard 48-72h';
+
+  const formatOptions = document.querySelectorAll('.format-option');
+  const speedBtns = document.querySelectorAll('.speed-btn');
+  const estPriceDisplay = document.getElementById('estPriceDisplay');
+  const estDeliverablesList = document.getElementById('estDeliverablesList');
+  const lockEstimateBtn = document.getElementById('lockEstimateBtn');
 
   const calculateEstimate = () => {
     const pkg = packages[currentPackageKey] || packages.starter;
     let total = pkg.price + speedSurplus;
 
-    // Addons Calculation
     const addonScript = document.getElementById('addonScript');
     const addonVoiceover = document.getElementById('addonVoiceover');
     const addonExtraStills = document.getElementById('addonExtraStills');
@@ -508,35 +627,30 @@ document.addEventListener('DOMContentLoaded', () => {
       activeAddons.push('Multi-Format Feed Covers (4:5 & 1:1)');
     }
 
-    // Update Price Display
     if (estPriceDisplay) {
       estPriceDisplay.textContent = `${total} JOD`;
     }
 
-    // Update Deliverables Checklist
     if (estDeliverablesList) {
       estDeliverablesList.innerHTML = '';
-      pkg.deliverables.forEach(item => {
+      (pkg.deliverables || []).forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `<span class="check-icon">✓</span> ${item}`;
         estDeliverablesList.appendChild(li);
       });
 
-      // Append active addons dynamically
       activeAddons.forEach(addon => {
         const li = document.createElement('li');
         li.innerHTML = `<span class="check-icon">✓</span> [Add-on] ${addon}`;
         estDeliverablesList.appendChild(li);
       });
 
-      // Delivery timeframe summary item
       const timeLi = document.createElement('li');
       timeLi.innerHTML = `<span class="check-icon">✓</span> Turnaround: ${currentSpeedLabel}`;
       estDeliverablesList.appendChild(timeLi);
     }
   };
 
-  // Package Selection Radio Handling
   formatOptions.forEach(opt => {
     opt.addEventListener('click', () => {
       formatOptions.forEach(o => o.classList.remove('active'));
@@ -550,7 +664,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Turnaround Speed Toggle (Standard vs 24-hr Rush)
   speedBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       speedBtns.forEach(b => b.classList.remove('active'));
@@ -562,17 +675,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Addons Listeners
   document.querySelectorAll('.addon-item input').forEach(input => {
     input.addEventListener('change', calculateEstimate);
   });
 
-  // Lock Estimate & Smooth Scroll to Calendar
   if (lockEstimateBtn) {
     lockEstimateBtn.addEventListener('click', () => {
       const shootTypeSelect = document.getElementById('shootType');
       const clientBrief = document.getElementById('clientBrief');
-      const selectedPkg = packages[currentPackageKey];
+      const selectedPkg = packages[currentPackageKey] || packages.starter;
 
       if (shootTypeSelect) {
         shootTypeSelect.value = currentPackageKey;
@@ -598,47 +709,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Initial Calculation Run
   calculateEstimate();
 
   /* ==========================================================================
-     4. SELECTED COMMERCIAL REELS CAROUSEL & ACCURATE COUNTER
-     ========================================================================== */
-  const carousel = document.getElementById('clipsCarousel');
-  const prevBtn = document.getElementById('prevReelBtn');
-  const nextBtn = document.getElementById('nextReelBtn');
-  const counter = document.getElementById('carouselCounter');
-
-  if (carousel && counter) {
-    const cards = carousel.querySelectorAll('.clip-card');
-    const totalCards = cards.length;
-
-    const updateAccurateCounter = () => {
-      const cardWidth = cards[0].offsetWidth + 24;
-      const scrollPos = carousel.scrollLeft;
-      const currentIdx = Math.min(Math.round(scrollPos / cardWidth) + 1, totalCards);
-      counter.textContent = `${String(currentIdx).padStart(2, '0')} / ${String(totalCards).padStart(2, '0')}`;
-    };
-
-    updateAccurateCounter();
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: cards[0].offsetWidth + 24, behavior: 'smooth' });
-      });
-    }
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: -(cards[0].offsetWidth + 24), behavior: 'smooth' });
-      });
-    }
-
-    carousel.addEventListener('scroll', updateAccurateCounter);
-  }
-
-  /* ==========================================================================
-     5. DEDICATED FULL-PAGE CASE STUDY OVERLAY
+     6. DEDICATED FULL-PAGE CASE STUDY OVERLAY
      ========================================================================== */
   const projectOverlay = document.getElementById('projectPageOverlay');
   const closeProjectBtn = document.getElementById('closeProjectPageBtn');
@@ -655,26 +729,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const projRetention = document.getElementById('projRetention');
   const projBookBtn = document.getElementById('projBookBtn');
 
-  document.querySelectorAll('.clip-card').forEach(card => {
-    card.addEventListener('click', () => {
-      projTitle.textContent = card.dataset.title;
-      projCategory.textContent = card.dataset.category;
-      projViews.textContent = card.dataset.views;
-      projObjective.textContent = card.dataset.objective || 'Craft high-retention commercial vertical asset.';
-      projHook.textContent = card.dataset.hook || '2-second pattern interrupt.';
-      projDesc.textContent = card.dataset.desc;
-      projRoi.textContent = card.dataset.roi || 'Significant organic conversion acceleration.';
-      projGear.textContent = card.dataset.gear;
-      projSoftware.textContent = card.dataset.software;
-      projRetention.textContent = card.dataset.retention;
+  // Attach click events to all clip cards (both initial & dynamically rendered)
+  const attachClipCardEvents = () => {
+    document.querySelectorAll('.clip-card').forEach(card => {
+      card.addEventListener('click', () => {
+        projTitle.textContent = card.dataset.title;
+        projCategory.textContent = card.dataset.category;
+        projViews.textContent = card.dataset.views;
+        projObjective.textContent = card.dataset.objective || 'Craft high-retention commercial vertical asset.';
+        projHook.textContent = card.dataset.hook || '2-second pattern interrupt.';
+        projDesc.textContent = card.dataset.desc;
+        projRoi.textContent = card.dataset.roi || 'Significant organic conversion acceleration.';
+        projGear.textContent = card.dataset.gear;
+        projSoftware.textContent = card.dataset.software;
+        projRetention.textContent = card.dataset.retention;
 
-      projectPageVideo.src = card.dataset.videoSrc;
-      projectPageVideo.play().catch(() => {});
+        projectPageVideo.src = card.dataset.videoSrc;
+        projectPageVideo.play().catch(() => {});
 
-      projectOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden';
+        projectOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
     });
-  });
+  };
+  attachClipCardEvents();
 
   const closeProjectPage = () => {
     projectOverlay.classList.remove('active');
@@ -693,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* ==========================================================================
-     6. LIVE BOOKING CALENDAR & AVAILABILITY ENGINE
+     7. LIVE BOOKING CALENDAR & AVAILABILITY ENGINE
      ========================================================================== */
   const monthNames = [
     "January", "February", "March", "April", "May", "June",
@@ -904,7 +982,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (dismissConfirmBtn) dismissConfirmBtn.addEventListener('click', closeConfirmation);
 
   /* ==========================================================================
-     7. VERIFIED CLIENT REVIEW ENGINE & MODAL
+     8. VERIFIED CLIENT REVIEW ENGINE & MODAL
      ========================================================================== */
   const openRevModal = document.getElementById('openReviewModalBtn');
   const closeRevModal = document.getElementById('closeReviewModalBtn');
@@ -954,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     8. HARDWARE-ACCELERATED SPOTLIGHT CURSOR & MAGNETIC HOVER
+     9. HARDWARE-ACCELERATED SPOTLIGHT CURSOR & MAGNETIC HOVER
      ========================================================================== */
   const cursorDot = document.getElementById('cursorDot');
   const cursorGlow = document.getElementById('cursorGlow');
@@ -967,7 +1045,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cursorGlow.style.top = `${e.clientY}px`;
     });
 
-    document.querySelectorAll('.magnetic-target, .btn, .clip-card').forEach(el => {
+    document.querySelectorAll('.magnetic-target, .btn, .clip-card, .still-card').forEach(el => {
       el.addEventListener('mouseenter', () => cursorDot.classList.add('magnetic-active'));
       el.addEventListener('mouseleave', () => cursorDot.classList.remove('magnetic-active'));
     });
