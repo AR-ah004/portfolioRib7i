@@ -1,6 +1,6 @@
 /**
  * Ribhi Queder — Commercial Portfolio Engine
- * Three.js WebGL iPhone 17 Pro Max Physics, Interactive Split Grade,
+ * Featured Master Reel Spotlight & Sync, Interactive Split Grade,
  * Live Dynamic Synchronization with Admin LocalStorage (Reels, Stills & Packages),
  * Dynamic Availability Calendar, and Case Study Modal.
  */
@@ -67,348 +67,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     1. THREE.JS PROCEDURAL IPHONE 17 PRO MAX (REPLACING THE GLOBE)
+     1. FEATURED MASTER REEL SYNC & CONTROLS
      ========================================================================== */
-  const canvasContainer = document.getElementById('three-phone-container');
+  const heroVideo = document.getElementById('heroFeaturedVideo');
+  const heroTitle = document.getElementById('heroReelTitle');
+  const heroCategory = document.getElementById('heroReelCategory');
+  const audioBtn = document.getElementById('heroAudioToggleBtn');
 
-  if (canvasContainer) {
-    const scene = new THREE.Scene();
+  // استدعاء البورتفوليو المخزن في localStorage لاختيار أول ريل نشط أو محدد من الأدمن
+  const portfolioData = JSON.parse(localStorage.getItem('rq_portfolio') || 'null');
 
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      canvasContainer.clientWidth / canvasContainer.clientHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, 9.5);
+  if (portfolioData && heroVideo) {
+    // جلب الريل المميز المحدد أو أول ريل نشط
+    const featuredReel = portfolioData.find(m => m.type === 'reels' && !m.isDeleted && m.isFeatured) ||
+                         portfolioData.find(m => m.type === 'reels' && !m.isDeleted);
 
-    const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'high-performance' });
-    renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.25;
-    canvasContainer.appendChild(renderer.domElement);
-
-    // Studio Three-Point Lighting Architecture
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
-    scene.add(ambientLight);
-
-    const keyLight = new THREE.DirectionalLight(0xffffff, 3.2);
-    keyLight.position.set(6, 6, 7);
-    scene.add(keyLight);
-
-    // Animated Cyber Cyan & Electric Indigo Rim Spotlights
-    const rimCyan = new THREE.PointLight(0x06b6d4, 5.0, 30);
-    rimCyan.position.set(-6, 3, -5);
-    scene.add(rimCyan);
-
-    const rimIndigo = new THREE.PointLight(0x6366f1, 4.5, 30);
-    rimIndigo.position.set(6, -4, -4);
-    scene.add(rimIndigo);
-
-    // Tilt Pivot Group: Inclined on a 23.5-degree axis
-    const tiltGroup = new THREE.Group();
-    tiltGroup.rotation.z = THREE.MathUtils.degToRad(23.5);
-    scene.add(tiltGroup);
-
-    // Phone Model Root Group
-    const phoneRoot = new THREE.Group();
-    tiltGroup.add(phoneRoot);
-
-    /* --- Procedural Canvas Texture for Active 9:16 Showreel --- */
-    const screenCanvas = document.createElement('canvas');
-    screenCanvas.width = 512;
-    screenCanvas.height = 1024;
-    const ctx = screenCanvas.getContext('2d');
-
-    const screenTexture = new THREE.CanvasTexture(screenCanvas);
-    screenTexture.generateMipmaps = true;
-    screenTexture.minFilter = THREE.LinearMipmapLinearFilter;
-
-    // Materials
-    const titaniumMat = new THREE.MeshStandardMaterial({
-      color: 0x18181f,
-      metalness: 0.95,
-      roughness: 0.25,
-      envMapIntensity: 1.8
-    });
-
-    const screenGlassMat = new THREE.MeshStandardMaterial({
-      map: screenTexture,
-      roughness: 0.1,
-      metalness: 0.15,
-      emissive: 0x111116,
-      emissiveIntensity: 0.2
-    });
-
-    const rearGlassMat = new THREE.MeshStandardMaterial({
-      color: 0x0a0a0f,
-      metalness: 0.85,
-      roughness: 0.35
-    });
-
-    const lensGlassMat = new THREE.MeshPhysicalMaterial({
-      color: 0x06b6d4,
-      metalness: 0.9,
-      roughness: 0.05,
-      transmission: 0.85,
-      transparent: true,
-      opacity: 0.95,
-      reflectivity: 0.9,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1
-    });
-
-    const cameraRingMat = new THREE.MeshStandardMaterial({
-      color: 0x334155,
-      metalness: 0.98,
-      roughness: 0.2
-    });
-
-    /* --- Phone Chassis Construction --- */
-    const bodyWidth = 3.2;
-    const bodyHeight = 6.6;
-    const bodyDepth = 0.36;
-
-    const chassisGeo = new THREE.BoxGeometry(bodyWidth, bodyHeight, bodyDepth);
-    const chassisMesh = new THREE.Mesh(chassisGeo, titaniumMat);
-    phoneRoot.add(chassisMesh);
-
-    // Front Screen Panel
-    const screenGeo = new THREE.PlaneGeometry(bodyWidth - 0.14, bodyHeight - 0.14);
-    const screenMesh = new THREE.Mesh(screenGeo, screenGlassMat);
-    screenMesh.position.set(0, 0, (bodyDepth / 2) + 0.005);
-    phoneRoot.add(screenMesh);
-
-    // Rear Frosted Glass Backing
-    const rearGeo = new THREE.PlaneGeometry(bodyWidth - 0.1, bodyHeight - 0.1);
-    const rearMesh = new THREE.Mesh(rearGeo, rearGlassMat);
-    rearMesh.position.set(0, 0, -(bodyDepth / 2) - 0.005);
-    rearMesh.rotation.y = Math.PI;
-    phoneRoot.add(rearMesh);
-
-    /* --- Dynamic Island --- */
-    const islandGeo = new THREE.BoxGeometry(0.85, 0.22, 0.04);
-    const islandMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
-    const dynamicIsland = new THREE.Mesh(islandGeo, islandMat);
-    dynamicIsland.position.set(0, 2.78, (bodyDepth / 2) + 0.015);
-    phoneRoot.add(dynamicIsland);
-
-    // Camera Sensor Dot inside Dynamic Island
-    const sensorDot = new THREE.Mesh(
-      new THREE.CircleGeometry(0.04, 16),
-      new THREE.MeshBasicMaterial({ color: 0x06b6d4 })
-    );
-    sensorDot.position.set(0.24, 2.78, (bodyDepth / 2) + 0.02);
-    phoneRoot.add(sensorDot);
-
-    /* --- Rear Triple-Lens Camera Plateau --- */
-    const bumpGeo = new THREE.BoxGeometry(1.6, 1.7, 0.18);
-    const cameraBump = new THREE.Mesh(bumpGeo, titaniumMat);
-    cameraBump.position.set(-0.65, 2.15, -(bodyDepth / 2) - 0.09);
-    phoneRoot.add(cameraBump);
-
-    // Lens Ring Helper
-    const createLens = (x, y) => {
-      const ring = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.40, 0.16, 32), cameraRingMat);
-      ring.rotation.x = Math.PI / 2;
-      ring.position.set(x, y, -(bodyDepth / 2) - 0.22);
-
-      const glass = new THREE.Mesh(new THREE.SphereGeometry(0.32, 24, 16), lensGlassMat);
-      glass.position.set(x, y, -(bodyDepth / 2) - 0.22);
-
-      phoneRoot.add(ring, glass);
-    };
-
-    createLens(-0.95, 2.45);
-    createLens(-0.95, 1.85);
-    createLens(-0.35, 2.15);
-
-    // Dual Tone Flash & LiDAR Sensor
-    const flashMesh = new THREE.Mesh(
-      new THREE.CircleGeometry(0.12, 16),
-      new THREE.MeshBasicMaterial({ color: 0xfef08a })
-    );
-    flashMesh.rotation.y = Math.PI;
-    flashMesh.position.set(-0.35, 2.65, -(bodyDepth / 2) - 0.185);
-
-    const lidarMesh = new THREE.Mesh(
-      new THREE.CircleGeometry(0.09, 16),
-      new THREE.MeshBasicMaterial({ color: 0x020617 })
-    );
-    lidarMesh.rotation.y = Math.PI;
-    lidarMesh.position.set(-0.35, 1.65, -(bodyDepth / 2) - 0.185);
-
-    phoneRoot.add(flashMesh, lidarMesh);
-
-    // Physical Buttons
-    const btnMat = titaniumMat;
-    const actionBtn = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.35, 0.1), btnMat);
-    actionBtn.position.set(-bodyWidth / 2 - 0.02, 1.8, 0);
-
-    const volUp = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.48, 0.1), btnMat);
-    volUp.position.set(-bodyWidth / 2 - 0.02, 1.2, 0);
-
-    const volDown = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.48, 0.1), btnMat);
-    volDown.position.set(-bodyWidth / 2 - 0.02, 0.6, 0);
-
-    const pwrBtn = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.75, 0.1), btnMat);
-    pwrBtn.position.set(bodyWidth / 2 + 0.02, 1.4, 0);
-
-    phoneRoot.add(actionBtn, volUp, volDown, pwrBtn);
-
-    /* --- Dynamic Canvas Screen Rendering --- */
-    let frameStep = 0;
-    function drawScreenFrame() {
-      frameStep += 0.035;
-
-      ctx.fillStyle = '#06070c';
-      ctx.fillRect(0, 0, 512, 1024);
-
-      const grad = ctx.createLinearGradient(0, 0, 512, 1024);
-      grad.addColorStop(0, '#090b14');
-      grad.addColorStop(0.5, '#1e1b4b');
-      grad.addColorStop(1, '#06b6d4');
-      ctx.fillStyle = grad;
-      ctx.globalAlpha = 0.45;
-      ctx.fillRect(0, 0, 512, 1024);
-      ctx.globalAlpha = 1.0;
-
-      // Status Bar
-      ctx.fillStyle = '#f8fafc';
-      ctx.font = '600 24px "Space Grotesk", sans-serif';
-      ctx.fillText('9:41', 54, 76);
-      ctx.font = '600 20px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('5G  100%', 384, 76);
-
-      // Simulated Reel Frame
-      const boxY = 140;
-      const boxH = 680;
-      ctx.fillStyle = '#030712';
-      ctx.fillRect(40, boxY, 432, boxH);
-
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(40, boxY, 432, boxH);
-      ctx.clip();
-
-      const pulseWave = Math.sin(frameStep) * 60;
-      const radGrad = ctx.createRadialGradient(256, 460 + pulseWave, 40, 256, 460, 240);
-      radGrad.addColorStop(0, 'rgba(99, 102, 241, 0.85)');
-      radGrad.addColorStop(0.5, 'rgba(6, 182, 212, 0.4)');
-      radGrad.addColorStop(1, 'rgba(0,0,0,0.9)');
-      ctx.fillStyle = radGrad;
-      ctx.fillRect(40, boxY, 432, boxH);
-
-      // Commercial Copy
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '700 28px "Space Grotesk", sans-serif';
-      ctx.fillText('RIBHI QUEDER', 64, 700);
-
-      ctx.fillStyle = '#38bdf8';
-      ctx.font = '500 18px "Plus Jakarta Sans", sans-serif';
-      ctx.fillText('COMMERCIAL SHOWREEL · 4K', 64, 730);
-
-      // Audio Bars
-      ctx.fillStyle = '#10b981';
-      for (let i = 0; i < 18; i++) {
-        const barH = 15 + Math.abs(Math.sin(frameStep * 2 + i * 0.45)) * 48;
-        ctx.fillRect(64 + i * 18, 770 - barH, 12, barH);
-      }
-      ctx.restore();
-
-      // UI Action Dots
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      ctx.beginPath();
-      ctx.arc(430, 620, 18, 0, Math.PI * 2);
-      ctx.arc(430, 680, 18, 0, Math.PI * 2);
-      ctx.arc(430, 740, 18, 0, Math.PI * 2);
-      ctx.fill();
-
-      // Dynamic Island Live Recording Wave
-      ctx.fillStyle = '#ef4444';
-      ctx.beginPath();
-      ctx.arc(256, 70, 6, 0, Math.PI * 2);
-      ctx.fill();
-
-      screenTexture.needsUpdate = true;
+    if (featuredReel) {
+      heroVideo.src = featuredReel.url;
+      if (heroTitle) heroTitle.textContent = featuredReel.title;
+      if (heroCategory) heroCategory.textContent = featuredReel.category || 'Featured Cut';
     }
+  }
 
-    /* --- Interactive Physics & Orbit --- */
-    let isDragging = false;
-    let prevMousePos = { x: 0, y: 0 };
-    let angularVelY = 0;
-    let angularVelX = 0;
-
-    canvasContainer.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      prevMousePos = { x: e.clientX, y: e.clientY };
-    });
-
-    window.addEventListener('mouseup', () => { isDragging = false; });
-    canvasContainer.addEventListener('mousemove', (e) => {
-      if (isDragging) {
-        const deltaX = e.clientX - prevMousePos.x;
-        const deltaY = e.clientY - prevMousePos.y;
-        angularVelY = deltaX * 0.008;
-        angularVelX = deltaY * 0.008;
-
-        phoneRoot.rotation.y += angularVelY;
-        phoneRoot.rotation.x += angularVelX;
-      }
-      prevMousePos = { x: e.clientX, y: e.clientY };
-    });
-
-    // Touch Support
-    canvasContainer.addEventListener('touchstart', (e) => {
-      isDragging = true;
-      prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => { isDragging = false; });
-    canvasContainer.addEventListener('touchmove', (e) => {
-      if (isDragging && e.touches[0]) {
-        const deltaX = e.touches[0].clientX - prevMousePos.x;
-        const deltaY = e.touches[0].clientY - prevMousePos.y;
-        angularVelY = deltaX * 0.008;
-        angularVelX = deltaY * 0.008;
-
-        phoneRoot.rotation.y += angularVelY;
-        phoneRoot.rotation.x += angularVelX;
-        prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-      }
-    }, { passive: true });
-
-    const clock = new THREE.Clock();
-
-    function render3DLoop() {
-      requestAnimationFrame(render3DLoop);
-      const elapsed = clock.getElapsedTime();
-
-      drawScreenFrame();
-
-      if (!isDragging) {
-        angularVelY *= 0.94;
-        angularVelX *= 0.94;
-
-        phoneRoot.rotation.y += angularVelY + 0.007;
-        phoneRoot.rotation.x += angularVelX;
-        phoneRoot.rotation.x += (0 - phoneRoot.rotation.x) * 0.03;
-      }
-
-      phoneRoot.position.y = Math.sin(elapsed * 1.6) * 0.14;
-      rimCyan.position.x = Math.sin(elapsed * 0.8) * 7;
-      rimIndigo.position.y = Math.cos(elapsed * 0.9) * 5;
-
-      renderer.render(scene, camera);
-    }
-    render3DLoop();
-
-    window.addEventListener('resize', () => {
-      if (!canvasContainer) return;
-      camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+  // التحكم بالصوت (Mute / Unmute)
+  if (audioBtn && heroVideo) {
+    audioBtn.addEventListener('click', () => {
+      heroVideo.muted = !heroVideo.muted;
+      audioBtn.textContent = heroVideo.muted ? '🔇' : '🔊';
     });
   }
 
@@ -441,6 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isSliding) setGradePosition(e.clientX);
     });
 
+    // Touch Handling
     gradeComparison.addEventListener('touchstart', (e) => {
       isSliding = true;
       setGradePosition(e.touches[0].clientX);
@@ -450,6 +136,21 @@ document.addEventListener('DOMContentLoaded', () => {
     gradeComparison.addEventListener('touchmove', (e) => {
       if (isSliding && e.touches[0]) setGradePosition(e.touches[0].clientX);
     }, { passive: true });
+
+    // Keyboard Accessibility
+    gradeComparison.setAttribute('tabindex', '0');
+    gradeComparison.addEventListener('keydown', (e) => {
+      const currentWidth = parseFloat(gradeFinalLayer.style.width) || 50;
+      if (e.key === 'ArrowLeft') {
+        const next = Math.max(5, currentWidth - 5);
+        gradeFinalLayer.style.width = `${next}%`;
+        gradeDivider.style.left = `${next}%`;
+      } else if (e.key === 'ArrowRight') {
+        const next = Math.min(95, currentWidth + 5);
+        gradeFinalLayer.style.width = `${next}%`;
+        gradeDivider.style.left = `${next}%`;
+      }
+    });
   }
 
   /* ==========================================================================
@@ -493,7 +194,6 @@ document.addEventListener('DOMContentLoaded', () => {
      4. STILLS GALLERY FILTER & LIGHTBOX ENGINE
      ========================================================================== */
   const filterTabs = document.querySelectorAll('.filter-tab');
-  const stillCards = document.querySelectorAll('.still-card');
   const lightbox = document.getElementById('stillsLightbox');
   const lightboxImg = document.getElementById('lightboxImage');
   const lightboxCaption = document.getElementById('lightboxCaption');
@@ -515,20 +215,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.querySelectorAll('.still-card').forEach((card) => {
-    card.addEventListener('click', () => {
-      const img = card.querySelector('img');
-      const title = card.querySelector('strong') ? card.querySelector('strong').textContent : 'Asset';
-      const format = card.querySelector('.format-pill') ? card.querySelector('.format-pill').textContent : '4:5';
+  const bindStillCardClicks = () => {
+    document.querySelectorAll('.still-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img');
+        const title = card.querySelector('strong') ? card.querySelector('strong').textContent : 'Asset';
+        const format = card.querySelector('.format-pill') ? card.querySelector('.format-pill').textContent : '4:5';
 
-      if (lightbox && lightboxImg && img) {
-        lightboxImg.src = img.src;
-        lightboxCaption.textContent = `${title} (${format})`;
-        lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      }
+        if (lightbox && lightboxImg && img) {
+          lightboxImg.src = img.src;
+          lightboxCaption.textContent = `${title} (${format})`;
+          lightbox.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        }
+      });
     });
-  });
+  };
+  bindStillCardClicks();
 
   const closeLightbox = () => {
     if (lightbox) {
@@ -548,7 +251,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ==========================================================================
      5. INSTANT INTERACTIVE PACKAGE ESTIMATOR (JOD PACKAGES)
      ========================================================================== */
-  // Default packages fallback if localStorage has none
   const defaultPackages = {
     starter: {
       name: 'Starter Reel & Stills',
@@ -557,7 +259,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '2x High-Retention 9:16 Vertical Reels',
         '4x Color-Graded Location/Product Photos',
         '4K Ultra-HD Video Capture with Studio Lighting',
-        'Standard 48-72h Delivery Window'
+        'On-Screen Dynamic Captions & Licensed Music',
+        '2 Rounds of Minor Cut Revisions'
       ]
     },
     growth: {
@@ -567,32 +270,34 @@ document.addEventListener('DOMContentLoaded', () => {
         '4x High-Retention 9:16 Vertical Reels',
         '8x Color-Graded Grid & Story Photos',
         'Creative Hook & Script Concept Assistance',
+        '4K Resolution, Custom Color Grading & Captions',
         'Standard 48-72h Delivery'
       ]
     },
     halfday: {
-      name: 'Commercial Shoot',
-      price: 220,
+      name: 'Complete Commercial Shoot',
+      price: 190,
       deliverables: [
         'Complete Venue / Storefront Half-Day Production',
         '7x High-Converting Vertical Reels (Demos + Walkthroughs)',
         'Comprehensive 15+ Commercial Image Bank',
+        'Multi-angle Cinema Lighting & Sound Setup',
         'Master Audio Mixing & Priority Processing'
       ]
     },
     monthly: {
       name: 'Monthly Content Retainer',
-      price: 450,
+      price: 320,
       deliverables: [
         '12x Strategic Reels / Month (Consistent Brand Pipeline)',
         '2 Dedicated Half-Day Production Sessions',
         'Full Feed Photos Bank (4:5 & 1:1)',
+        'Dedicated Content Calendar & Topic Planning',
         'Ongoing Revisions & Priority Turnaround'
       ]
     }
   };
 
-  // Merge packages from localStorage if available
   const packages = storedPackages ? { ...defaultPackages, ...storedPackages } : defaultPackages;
 
   let currentPackageKey = 'starter';
@@ -729,7 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const projRetention = document.getElementById('projRetention');
   const projBookBtn = document.getElementById('projBookBtn');
 
-  // Attach click events to all clip cards (both initial & dynamically rendered)
   const attachClipCardEvents = () => {
     document.querySelectorAll('.clip-card').forEach(card => {
       card.addEventListener('click', () => {

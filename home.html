@@ -47,7 +47,7 @@
   </header>
 
   <main>
-    <!-- 1. Redesigned Hero Section (Bento Studio Style) -->
+    <!-- 1. Redesigned Hero Section (Featured Reel Spotlight) -->
     <section class="hero" id="top">
       <div class="container">
         <div class="hero-grid">
@@ -66,65 +66,80 @@
               <div class="badge-location">Amman 🇯🇴</div>
             </div>
 
-            <!-- High-Impact Kinetic Headline -->
+            <!-- Kinetic Headline -->
             <h1 class="hero-title">
-              Engineering code. <br />
-              <span class="gradient-headline">Directing vertical visuals.</span>
+              Engineering logic. <br />
+              <span class="gradient-headline">Directing high-retention video.</span>
             </h1>
 
             <p class="hero-lead">
-              Software Engineering student, commercial vertical videographer, and seasoned event organizer based in Amman. I bridge technical architecture with cinematic storytelling — crafting high-retention 9:16 cuts that move stock and drive brand conversion.
+              Software Engineering student, commercial vertical videographer, and event organizer based in Amman. I build high-impact 9:16 cuts engineered for the first three seconds — blending technical precision with cinematic pacing that converts views into active customers.
             </p>
 
-            <div class="hero-cta-group">
-              <a href="#estimator" class="btn btn-main magnetic-target">
-                <span>Explore Packages &amp; Pricing &rarr;</span>
-              </a>
-              <a href="#clips" class="btn btn-secondary magnetic-target">
-                <span>Watch Commercial Cuts &darr;</span>
-              </a>
-            </div>
+            
 
             <!-- 3 Bento Capability Tiles -->
             <div class="bento-talent-strip">
               <div class="talent-tile">
                 <div class="tile-top">
                   <span class="tile-icon">💻</span>
-                  <span class="tile-badge">Core Logic</span>
+                  <span class="tile-badge">Tech Logic</span>
                 </div>
                 <strong>Software Engineer</strong>
-                <p>Full-stack web architecture, system design &amp; responsive UI.</p>
+                
               </div>
 
               <div class="talent-tile highlight-tile">
                 <div class="tile-top">
                   <span class="tile-icon">🎬</span>
-                  <span class="tile-badge pro">9:16 Cinema</span>
+                  <span class="tile-badge pro">Vertical Cinema</span>
                 </div>
-                <strong>Vertical Director</strong>
-                <p>Retention-engineered commercial reels &amp; custom color grading.</p>
+                <strong>Commercial Director</strong>
+                
               </div>
 
               <div class="talent-tile">
                 <div class="tile-top">
                   <span class="tile-icon">⚡</span>
-                  <span class="tile-badge">Leadership</span>
+                  <span class="tile-badge">Operations</span>
                 </div>
-                <strong>Event Operations</strong>
-                <p>Tech summits, stage logistics &amp; dynamic media production.</p>
+                <strong>Event Lead</strong>
+                
               </div>
             </div>
           </div>
 
-          <!-- 3D iPhone 17 Pro Max Canvas Container -->
-          <div class="phone-3d-wrapper">
-            <div class="viewport-tally">
-              <span class="rec-dot"></span>
-              <span>4K CAPTURE ACTIVE</span>
-            </div>
-            <div id="three-phone-container"></div>
-            <div class="phone-interaction-hint">
-              <span>✥ Drag to inspect 3D model</span>
+          <!-- Featured Showreel Spotlight (Replaces Three.js) -->
+          <div class="featured-reel-wrapper">
+            <div class="featured-reel-frame">
+              
+              <!-- Video Player (Controlled Dynamically) -->
+              <video id="heroFeaturedVideo" class="hero-showreel-video" autoplay loop muted playsinline preload="auto">
+                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+              </video>
+
+              <!-- Dynamic Island Simulation -->
+              <div class="phone-dynamic-island">
+                <span class="cam-lens"></span>
+              </div>
+
+              <!-- Live Floating Tally Badge -->
+              <div class="reel-live-tag">
+                <span class="rec-dot"></span>
+                <span id="heroReelBadgeText">FEATURED MASTER REEL</span>
+              </div>
+
+              <!-- Lower Video Overlay Info -->
+              <div class="reel-bottom-overlay">
+                <div class="reel-info-pill">
+                  <span class="reel-badge-mini" id="heroReelCategory">Commercial Showcase</span>
+                  <h3 id="heroReelTitle">Shelf Pick-up Macro</h3>
+                </div>
+                <button class="sound-toggle-btn" id="heroAudioToggleBtn" aria-label="Toggle Sound">
+                  🔊
+                </button>
+              </div>
+
             </div>
           </div>
 
