@@ -1,30 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ribhi Queder — Vertical Cinematography & High-Retention Commercial Direction</title>
-  <meta name="description" content="Award-winning mobile commercial director and 9:16 vertical video specialist based in Amman, Jordan." />
+  <title>Ribhi Queder — Software Engineer, Commercial Director & Adventurer</title>
+  <meta name="description"
+    content="Commercial 9:16 vertical director, software engineer, and adventure filmmaker based in Amman, Jordan." />
 
-  <!-- Typography -->
+  <!-- Typography: Syne (Futuristic/Brutalist) + Space Grotesk + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&family=Syne:wght@700;800&display=swap"
+    rel="stylesheet">
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="style.css" />
 
-  <!-- CDNs: Three.js r128 -->
+  <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
-<body>
 
-  <!-- Ambient Cursor & Atmospheric Glows -->
+<body class="neo-cyber-body">
+
+  <!-- Three.js 3D Wireframe Canvas (Expedition Terrain & Code Mesh) -->
+  <canvas id="webgl3dCanvas"></canvas>
+
+  <!-- Crosshair Viewfinder Custom Cursor -->
   <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="cursor-dot" id="cursorDot"></div>
-  <div class="mesh-ambient-1"></div>
-  <div class="mesh-ambient-2"></div>
-  <div class="mesh-ambient-3"></div>
+  <div class="viewfinder-cursor" id="viewfinderCursor">
+  </div>
+
+  <!-- HUD Telemetry Top Ribbon -->
+  <div class="hud-telemetry-ribbon">
+    <div class="hud-ribbon-content">
+      <span>HI</span>
+      <span>//</span>
+      <span>I</span>
+      <span>//</span>
+      <span>AM </span>
+      <span>//</span>
+      <span>RIBHI</span>
+      <span>//</span>
+      <span>QUEDER</span>
+    </div>
+  </div>
 
   <!-- Header Navigation -->
   <header id="mainHeader">
@@ -33,125 +54,68 @@
         <a href="#top" class="brand magnetic-target">
           <span class="brand-symbol">◆</span>
           <span class="brand-text">Ribhi Queder</span>
-          <span class="brand-badge">STUDIO</span>
+          
         </a>
         <ul class="nav-links">
-          <li><a href="#clips" class="magnetic-target">Reels</a></li>
-          <li><a href="#stills" class="magnetic-target">Stills</a></li>
-          <li><a href="#estimator" class="magnetic-target">Pricing</a></li>
-          <li><a href="#calendar" class="magnetic-target">Availability</a></li>
-          <li><a href="#calendar" class="btn-nav-action magnetic-target">Book Shoot &rarr;</a></li>
+          <li><a href="#clips" class="magnetic-target"> Reels</a></li>
+          <li><a href="#stills" class="magnetic-target"> Stills</a></li>
+          <li><a href="#estimator" class="magnetic-target"> Pricing</a></li>
+          <li><a href="#calendar" class="magnetic-target"> Schedule</a></li>
+          <li><a href="admin.html" target="_blank" class="admin-link-btn">Terminal [Admin]</a></li>
+          <li><a href="#calendar" class="btn-nav-action magnetic-target">Lock Slot &rarr;</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main>
-    <!-- 1. Redesigned Hero Section (Featured Reel Spotlight) -->
-    <section class="hero" id="top">
-      <div class="container">
-        <div class="hero-grid">
-          
-          <div class="hero-content">
-            <!-- Floating Profile Pill -->
-            <div class="identity-badge">
-              <div class="badge-avatar-ring">
-                <img src="images/ribhi-profile.jpg" alt="Ribhi Queder" onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=Ribhi'" />
-                <span class="live-dot" title="Available for commercial shoots"></span>
-              </div>
-              <div class="badge-meta">
-                <span class="badge-tag">CREATIVE TECH &amp; MEDIA</span>
-                <h3 class="badge-name">Ribhi Queder</h3>
-              </div>
-              <div class="badge-location">Amman 🇯🇴</div>
-            </div>
+    <!-- 1. Minimal & High-Impact Hero with Ribhi 3D Avatar -->
+    <section class="hero-cinematic" id="top">
+      <div class="container hero-cine-container">
 
-            <!-- Kinetic Headline -->
-            <h1 class="hero-title">
-              Engineering logic. <br />
-              <span class="gradient-headline">Directing high-retention video.</span>
-            </h1>
+        <div class="hero-cine-content">
+          <h1 class="hero-cine-title">
+            Directing <br>
+            <span class="glow-word">Attention.</span>
+          </h1>
 
-            <p class="hero-lead">
-              Software Engineering student, commercial vertical videographer, and event organizer based in Amman. I build high-impact 9:16 cuts engineered for the first three seconds — blending technical precision with cinematic pacing that converts views into active customers.
-            </p>
+          <p class="hero-cine-sub">
+            Commercial Director &amp; Software Engineer. Crafting high-retention and visual systems that convert.
+          </p>
 
-            
-
-            <!-- 3 Bento Capability Tiles -->
-            <div class="bento-talent-strip">
-              <div class="talent-tile">
-                <div class="tile-top">
-                  <span class="tile-icon">💻</span>
-                  <span class="tile-badge">Tech Logic</span>
-                </div>
-                <strong>Software Engineer</strong>
-                
-              </div>
-
-              <div class="talent-tile highlight-tile">
-                <div class="tile-top">
-                  <span class="tile-icon">🎬</span>
-                  <span class="tile-badge pro">Vertical Cinema</span>
-                </div>
-                <strong>Commercial Director</strong>
-                
-              </div>
-
-              <div class="talent-tile">
-                <div class="tile-top">
-                  <span class="tile-icon">⚡</span>
-                  <span class="tile-badge">Operations</span>
-                </div>
-                <strong>Event Lead</strong>
-                
-              </div>
-            </div>
+          <div class="hero-trinity-tags">
+            <span class="tag-pill active">🎬 Commercial Cinema</span>
+            <span class="tag-pill">💻 Software Logic</span>
+            <span class="tag-pill">🧭 Outdoor Expeditions</span>
           </div>
 
-          <!-- Featured Showreel Spotlight (Replaces Three.js) -->
-          <div class="featured-reel-wrapper">
-            <div class="featured-reel-frame">
-              
-              <!-- Video Player (Controlled Dynamically) -->
-              <video id="heroFeaturedVideo" class="hero-showreel-video" autoplay loop muted playsinline preload="auto">
-                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
-              </video>
-
-              <!-- Dynamic Island Simulation -->
-              <div class="phone-dynamic-island">
-                <span class="cam-lens"></span>
-              </div>
-
-              <!-- Live Floating Tally Badge -->
-              <div class="reel-live-tag">
-                <span class="rec-dot"></span>
-                <span id="heroReelBadgeText">FEATURED MASTER REEL</span>
-              </div>
-
-              <!-- Lower Video Overlay Info -->
-              <div class="reel-bottom-overlay">
-                <div class="reel-info-pill">
-                  <span class="reel-badge-mini" id="heroReelCategory">Commercial Showcase</span>
-                  <h3 id="heroReelTitle">Shelf Pick-up Macro</h3>
-                </div>
-                <button class="sound-toggle-btn" id="heroAudioToggleBtn" aria-label="Toggle Sound">
-                  🔊
-                </button>
-              </div>
-
-            </div>
+          <div class="hero-actions-group">
+            <a href="#clips" class="btn-cine-primary">Explore Portfolio &darr;</a>
+            <a href="#calendar" class="btn-cine-ghost">Book Production Slot &rarr;</a>
           </div>
-
         </div>
+
+        <!-- Right Side: Ribhi 3D Interactive Stage -->
+        <div class="hero-stage-wrapper">
+          <div class="character-hologram-card neo-card" data-tilt id="ribhiCharacterStage">
+            <!-- Ribhi 3D Video Character -->
+            <div class="character-video-wrap">
+              <video id="ribhiCharVideo" autoplay loop muted playsinline preload="auto">
+                <source src="Animate_the_D_character_from.mp4" type="video/mp4">
+              </video>
+              <div class="character-edge-vignette"></div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- 2. Selected Commercial Reels Carousel -->
+    <!-- 2. Selected Commercial Reels Carousel (With 3D Tilt and Strategy Inspections) -->
     <section class="clips-section container" id="clips">
       <div class="section-header-wrap">
         <div>
-          <div class="section-badge">CASE STUDIES</div>
+          <div class="section-badge">[01] TELEMETRY & STRATEGY</div>
           <h2 class="section-title">Selected Commercial Work</h2>
           <p class="section-subtitle">Real campaigns engineered for high first-3-second retention. Click any card to inspect strategy.</p>
         </div>
@@ -167,52 +131,49 @@
 
       <div class="clips-carousel" id="clipsCarousel">
         <!-- Reel Card 01 -->
-        <div class="clip-card magnetic-target" 
-             data-title="Shelf Pick-up Macro" 
-             data-category="Macro Demo"
-             data-video-src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
-             data-views="180K Organic"
-             data-retention="86% 3s Hold"
-             data-desc="Slow motion tactile interaction highlighting product materials."
-             data-gear="Sony FX3 Cinema Line"
-             data-software="DaVinci Resolve Studio"
-             data-objective="Drive direct-to-shelf consumer pull."
-             data-hook="0.5-second macro snap interrupt."
-             data-roi="+38% direct retail sales acceleration.">
+        <div class="clip-card neo-card magnetic-target" data-tilt data-title="Shelf Pick-up Macro"
+          data-category="Macro Demo"
+          data-video-src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+          data-views="180K Organic" data-retention="86% 3s Hold"
+          data-desc="Slow motion tactile interaction highlighting product materials." data-gear="Sony FX3 Cinema Line"
+          data-software="DaVinci Resolve Studio" data-objective="Drive direct-to-shelf consumer pull."
+          data-hook="0.5-second macro snap interrupt." data-roi="+38% direct retail sales acceleration.">
           <div class="clip-media-box">
             <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
               <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
             </video>
-            <span class="card-badge">Inspect Strategy &nearr;</span>
+            <span class="card-badge">DECRYPT STRATEGY &nearr;</span>
           </div>
           <div class="clip-details">
-            <strong>Shelf Pick-up</strong>
-            <span>Macro Demo</span>
+            <div>
+              <strong>Shelf Pick-up</strong>
+              <span>Macro Demo</span>
+            </div>
+            <span class="telemetry-badge">86% 3S_HOLD</span>
           </div>
         </div>
 
         <!-- Reel Card 02 -->
-        <div class="clip-card magnetic-target" 
-             data-title="Showroom Walkthrough" 
-             data-category="Retail / In-Store"
-             data-video-src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
-             data-views="240K Organic"
-             data-retention="82% 3s Hold"
-             data-desc="Dynamic gimbal walkthrough with seamless transitions and on-screen prices."
-             data-gear="Sony FX3 + DJI RS3 Pro"
-             data-software="DaVinci Resolve Studio"
-             data-objective="Showcase physical store footprint in Amman."
-             data-hook="Rapid entrance motion ramp."
-             data-roi="Record foot-traffic weekend.">
+        <div class="clip-card neo-card magnetic-target" data-tilt data-title="Showroom Walkthrough"
+          data-category="Retail / In-Store"
+          data-video-src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4"
+          data-views="240K Organic" data-retention="82% 3s Hold"
+          data-desc="Dynamic gimbal walkthrough with seamless transitions and on-screen prices."
+          data-gear="Sony FX3 + DJI RS3 Pro" data-software="DaVinci Resolve Studio"
+          data-objective="Showcase physical store footprint in Amman." data-hook="Rapid entrance motion ramp."
+          data-roi="Record foot-traffic weekend.">
           <div class="clip-media-box">
             <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
               <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4">
             </video>
-            <span class="card-badge">Inspect Strategy &nearr;</span>
+            <span class="card-badge">DECRYPT STRATEGY &nearr;</span>
           </div>
           <div class="clip-details">
-            <strong>Showroom Walkthrough</strong>
-            <span>In-Store Tour</span>
+            <div>
+              <strong>Showroom Walkthrough</strong>
+              <span>In-Store Tour</span>
+            </div>
+            <span class="telemetry-badge">240K VIEWS</span>
           </div>
         </div>
       </div>
@@ -222,24 +183,24 @@
     <section class="stills-section container" id="stills">
       <div class="section-header-wrap">
         <div>
-          <div class="section-badge">STILL PHOTOGRAPHY</div>
+          <div class="section-badge">[02] OPTICAL ASSETS</div>
           <h2 class="section-title">Feed Stills &amp; Product Photography</h2>
-          <p class="section-subtitle">Retouched and color-graded specifically for the grid — 4:5 feed orientation and 1:1 brand cards.</p>
         </div>
 
         <div class="stills-filter-tabs">
-          <button class="filter-tab active" data-filter="all">All Assets</button>
+          <button class="filter-tab active" data-filter="all">All Specs</button>
           <button class="filter-tab" data-filter="product">Products</button>
           <button class="filter-tab" data-filter="culinary">Culinary</button>
-          <button class="filter-tab" data-filter="lifestyle">Lifestyle</button>
+          <button class="filter-tab" data-filter="lifestyle">Expedition/Lifestyle</button>
         </div>
       </div>
 
       <div class="stills-grid-container" id="stillsGallery">
-        <div class="still-card" data-category="product">
+        <div class="still-card neo-card" data-tilt data-category="product">
           <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop" alt="Minimal Timepiece" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop"
+              alt="Minimal Timepiece" loading="lazy">
+            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>Minimal Timepiece</strong>
@@ -247,10 +208,11 @@
           </div>
         </div>
 
-        <div class="still-card" data-category="culinary">
+        <div class="still-card neo-card" data-tilt data-category="culinary">
           <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop" alt="Artisan Burger Set" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop"
+              alt="Artisan Burger Set" loading="lazy">
+            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>Artisan Burger Set</strong>
@@ -258,10 +220,11 @@
           </div>
         </div>
 
-        <div class="still-card" data-category="product">
+        <div class="still-card neo-card" data-tilt data-category="product">
           <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop" alt="Studio Audio Equipment" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop"
+              alt="Studio Audio Equipment" loading="lazy">
+            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>Acoustic Hardware</strong>
@@ -269,10 +232,11 @@
           </div>
         </div>
 
-        <div class="still-card" data-category="lifestyle">
+        <div class="still-card neo-card" data-tilt data-category="lifestyle">
           <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop" alt="Sneaker Macro Texture" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop"
+              alt="Sneaker Macro Texture" loading="lazy">
+            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>Runner Macro Texture</strong>
@@ -293,22 +257,22 @@
 
     <!-- 4. Interactive Package Estimator (JOD) -->
     <section class="estimator-section container" id="estimator">
-      <div class="section-badge">TRANSPARENT PRICING</div>
+      <div class="section-badge">[03] COMMERCIAL QUOTA</div>
       <div class="section-head">
-        <h2>Instant Package &amp; Production Estimator</h2>
-        <p>Choose your tailored video package, optional add-ons, and turnaround urgency to instantly qualify your budget.</p>
+        <h2>Instant Production Estimator</h2>
+        <p>Choose your tailored video package and turnaround urgency to instantly qualify your budget.</p>
       </div>
 
-      <div class="estimator-card">
+      <div class="estimator-card neo-card">
         <div class="estimator-grid">
-          
+
           <div class="estimator-controls">
             <!-- Packages -->
             <div class="est-group">
               <label class="est-label">1. Select Production Package</label>
               <div class="format-cards-grid">
-                
-                <label class="format-option active">
+
+                <label class="format-option active neo-option">
                   <input type="radio" name="packageType" value="starter" checked />
                   <div class="format-body">
                     <span class="format-name">Starter Reel &amp; Stills</span>
@@ -317,7 +281,7 @@
                   </div>
                 </label>
 
-                <label class="format-option">
+                <label class="format-option neo-option">
                   <input type="radio" name="packageType" value="growth" />
                   <div class="format-body">
                     <span class="format-name">Growth Content Pack</span>
@@ -326,7 +290,7 @@
                   </div>
                 </label>
 
-                <label class="format-option">
+                <label class="format-option neo-option">
                   <input type="radio" name="packageType" value="halfday" />
                   <div class="format-body">
                     <span class="format-name">Commercial Shoot</span>
@@ -335,7 +299,7 @@
                   </div>
                 </label>
 
-                <label class="format-option">
+                <label class="format-option neo-option">
                   <input type="radio" name="packageType" value="monthly" />
                   <div class="format-body">
                     <span class="format-name">Monthly Retainer</span>
@@ -351,59 +315,26 @@
             <div class="est-group">
               <label class="est-label">2. Turnaround Speed</label>
               <div class="speed-toggle-box">
-                <button type="button" class="speed-btn active" data-speed="standard">
+                <button type="button" class="speed-btn active neo-option" data-speed="standard">
                   <strong>Standard Delivery</strong>
                   <span>48-72 Hours First Cut (Included)</span>
                 </button>
-                <button type="button" class="speed-btn" data-speed="rush">
+                <button type="button" class="speed-btn neo-option" data-speed="rush">
                   <strong>Express Priority</strong>
                   <span>24-Hour Rush (+25 JOD)</span>
                 </button>
               </div>
             </div>
 
-            <!-- Add-ons -->
-            <div class="est-group">
-              <label class="est-label">3. Creative Add-ons</label>
-              <div class="addons-list">
-                <label class="addon-item">
-                  <input type="checkbox" id="addonScript" value="15" />
-                  <div class="addon-info">
-                    <span class="addon-title">Hook Scripting &amp; Angle Testing</span>
-                    <span class="addon-desc">Tested competitor patterns &amp; psychological interrupts</span>
-                  </div>
-                  <span class="addon-cost">+15 JOD</span>
-                </label>
-
-                <label class="addon-item">
-                  <input type="checkbox" id="addonVoiceover" value="20" />
-                  <div class="addon-info">
-                    <span class="addon-title">Studio Voiceover &amp; Sound Mix</span>
-                    <span class="addon-desc">Commercial audio narrative + SFX</span>
-                  </div>
-                  <span class="addon-cost">+20 JOD</span>
-                </label>
-
-                <label class="addon-item">
-                  <input type="checkbox" id="addonExtraStills" value="15" />
-                  <div class="addon-info">
-                    <span class="addon-title">Matching 4:5 &amp; 1:1 Feed Covers</span>
-                    <span class="addon-desc">Covers color-graded identically for the grid</span>
-                  </div>
-                  <span class="addon-cost">+15 JOD</span>
-                </label>
-              </div>
-            </div>
-
           </div>
 
           <!-- Summary Box -->
-          <div class="estimator-summary-box">
+          <div class="estimator-summary-box neo-card">
             <div class="summary-header">
-              <span class="summary-badge">ESTIMATED PRODUCTION INVESTMENT</span>
+              <span class="summary-badge">PRODUCTION TELEMETRY TOTAL</span>
               <div class="summary-price-range">
                 <span class="price-figure" id="estPriceDisplay">70 JOD</span>
-                <span class="price-currency">JOD / Total Investment</span>
+                <span class="price-currency">JOD / Direct Investment</span>
               </div>
             </div>
 
@@ -418,10 +349,10 @@
             </div>
 
             <div class="summary-cta-wrap">
-              <button type="button" class="btn btn-main btn-block" id="lockEstimateBtn">
-                <span>Lock this Package &amp; Book Shoot &rarr;</span>
+              <button type="button" class="btn btn-main btn-block neo-btn-primary" id="lockEstimateBtn">
+                <span>LOCK PACKAGE &amp; BOOK SHOOT &rarr;</span>
               </button>
-              <p class="summary-note">Transparent rates. No surprise equipment fees.</p>
+              <p class="summary-note">Transparent rates. No surprise equipment surcharges.</p>
             </div>
           </div>
 
@@ -433,17 +364,17 @@
     <div class="project-page-overlay" id="projectPageOverlay">
       <div class="project-page-container">
         <div class="project-page-topbar">
-          <button class="back-to-work-btn magnetic-target" id="closeProjectPageBtn">&larr; Back to Showcase</button>
-          <span class="project-watermark">RIBHI QUEDER // CASE STUDY</span>
+          <button class="back-to-work-btn magnetic-target" id="closeProjectPageBtn">&larr; [ESC] Back to Showcase</button>
+          <span class="project-watermark">RIBHI QUEDER // CASE STUDY DECRYPTION</span>
         </div>
 
         <div class="project-page-content">
           <div class="project-media-column">
-            <div class="project-video-viewport">
+            <div class="project-video-viewport neo-card">
               <video id="projectPageVideo" controls playsinline loop>
                 <source src="" type="video/mp4">
               </video>
-              <div class="project-tag-badge">9:16 Native Vertical</div>
+              <div class="project-tag-badge">9:16 NATIVE VERTICAL</div>
             </div>
           </div>
 
@@ -471,15 +402,15 @@
             </div>
 
             <div class="proj-specs-grid">
-              <div class="proj-spec-item"><span>Camera Setup</span><strong id="projGear">Sony FX3</strong></div>
-              <div class="proj-spec-item"><span>Post Pipeline</span><strong id="projSoftware">DaVinci Resolve</strong></div>
-              <div class="proj-spec-item"><span>Retention</span><strong id="projRetention">86%+ Hook Hold</strong></div>
-              <div class="proj-spec-item"><span>Director</span><strong>Ribhi Queder</strong></div>
+              <div class="proj-spec-item neo-spec"><span>Camera Setup</span><strong id="projGear">Sony FX3</strong></div>
+              <div class="proj-spec-item neo-spec"><span>Post Pipeline</span><strong id="projSoftware">DaVinci Resolve</strong></div>
+              <div class="proj-spec-item neo-spec"><span>Retention</span><strong id="projRetention">86%+ Hook Hold</strong></div>
+              <div class="proj-spec-item neo-spec"><span>Director</span><strong>Ribhi Queder</strong></div>
             </div>
 
             <div class="proj-actions">
-              <a href="#calendar" class="btn btn-main magnetic-target" id="projBookBtn">
-                <span>Book Shoot Date &rarr;</span>
+              <a href="#calendar" class="btn btn-main neo-btn-primary magnetic-target" id="projBookBtn">
+                <span>RESERVE PRODUCTION DATE &rarr;</span>
               </a>
             </div>
           </div>
@@ -489,14 +420,14 @@
 
     <!-- 6. Production Booking Calendar -->
     <section class="calendar-section container" id="calendar">
-      <div class="section-badge">AVAILABILITY &amp; SLOTS</div>
+      <div class="section-badge">[04] SCHEDULING MATRIX</div>
       <div class="section-head">
         <h2>Live Production Schedule</h2>
         <p>Select any open date to review available shooting windows and lock in your production slot.</p>
       </div>
 
       <div class="calendar-booking-grid">
-        <div class="calendar-card">
+        <div class="calendar-card neo-card">
           <div class="calendar-header">
             <div class="calendar-month-year">
               <span id="calendarMonth">September</span>
@@ -509,22 +440,22 @@
           </div>
 
           <div class="calendar-weekdays">
-            <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            <span>SUN</span><span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span>
           </div>
 
           <div class="calendar-days" id="calendarDays"></div>
 
           <div class="calendar-legend">
-            <div class="legend-item"><span class="dot-indicator dot-available"></span> Full Capacity (3+ Slots)</div>
-            <div class="legend-item"><span class="dot-indicator dot-partial"></span> Limited (1-2 Slots Left)</div>
-            <div class="legend-item"><span class="dot-indicator dot-booked"></span> Fully Booked Out</div>
+            <div class="legend-item"><span class="dot-indicator dot-available"></span> Available (3+ Slots)</div>
+            <div class="legend-item"><span class="dot-indicator dot-partial"></span> Limited (1-2 Left)</div>
+            <div class="legend-item"><span class="dot-indicator dot-booked"></span> Locked / Booked</div>
           </div>
         </div>
 
-        <div class="booking-slot-card">
+        <div class="booking-slot-card neo-card">
           <div class="slot-header">
             <h3 id="selectedDateText">September 18, 2026</h3>
-            <span class="status-pill" id="dateStatusPill">Fully Open</span>
+            <span class="status-pill" id="dateStatusPill">Open Slate</span>
           </div>
 
           <p class="slot-desc">Select an on-set shooting window:</p>
@@ -557,8 +488,8 @@
               <textarea id="clientBrief" rows="3" placeholder="Describe the products, brand vibe, or location..."></textarea>
             </div>
 
-            <button type="submit" class="btn btn-main btn-block magnetic-target">
-              <span>Reserve Shoot &amp; Connect on WhatsApp &rarr;</span>
+            <button type="submit" class="btn btn-main btn-block neo-btn-primary magnetic-target">
+              <span>DISPATCH RESERVATION &amp; OPEN WHATSAPP &rarr;</span>
             </button>
           </form>
         </div>
@@ -569,15 +500,15 @@
     <section class="reviews-section container" id="reviews">
       <div class="section-head-flex">
         <div>
-          <div class="section-badge">REPUTATION</div>
+          <div class="section-badge">[05] CLIENT TELEMETRY</div>
           <h2>Verified Client Feedback</h2>
           <p>Real partners, real retention metrics, real bottom-line revenue transformation.</p>
         </div>
-        <button class="btn btn-secondary magnetic-target" id="openReviewModalBtn">+ Add Review</button>
+        <button class="btn btn-secondary neo-option magnetic-target" id="openReviewModalBtn">+ Add Endorsement</button>
       </div>
 
       <div class="reviews-grid" id="reviewsGrid">
-        <div class="review-card">
+        <div class="review-card neo-card" data-tilt>
           <div class="review-top">
             <div class="client-avatar">RK</div>
             <div class="client-meta">
@@ -587,10 +518,10 @@
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-quote">"Our showroom reel exceeded 450K organic views and generated a record surge in foot traffic."</p>
-          <div class="review-date">Verified Partner · 2 weeks ago</div>
+          <div class="review-date">VERIFIED COMMERCIAL PARTNER</div>
         </div>
 
-        <div class="review-card">
+        <div class="review-card neo-card" data-tilt>
           <div class="review-top">
             <div class="client-avatar">BM</div>
             <div class="client-meta">
@@ -600,7 +531,7 @@
             <div class="review-stars">★★★★★</div>
           </div>
           <p class="review-quote">"The macro lighting and sound design made our burgers look unbelievable. Final cuts delivered same day."</p>
-          <div class="review-date">Verified Partner · 3 weeks ago</div>
+          <div class="review-date">VERIFIED COMMERCIAL PARTNER</div>
         </div>
       </div>
     </section>
@@ -608,7 +539,7 @@
 
   <!-- Review Modal -->
   <div class="review-modal-backdrop" id="reviewModal">
-    <div class="review-modal-box">
+    <div class="review-modal-box neo-card">
       <button class="modal-close-btn" id="closeReviewModalBtn">&times;</button>
       <h3>Submit Client Feedback</h3>
       <p>Share your production experience and campaign reception.</p>
@@ -632,37 +563,37 @@
           <label>Feedback</label>
           <textarea id="revContent" rows="4" placeholder="Detail your experience..." required></textarea>
         </div>
-        <button type="submit" class="btn btn-main btn-block">Publish Review &rarr;</button>
+        <button type="submit" class="btn btn-main btn-block neo-btn-primary">PUBLISH ENDORSEMENT &rarr;</button>
       </form>
     </div>
   </div>
 
   <!-- Booking Confirmation Modal -->
   <div class="review-modal-backdrop" id="bookingConfirmModal">
-    <div class="review-modal-box confirm-box">
+    <div class="review-modal-box confirm-box neo-card">
       <button class="modal-close-btn" id="closeConfirmModalBtn">&times;</button>
       <div class="confirm-icon">✓</div>
-      <h3>Shoot Slot Held!</h3>
+      <h3>Shoot Slot Reserved</h3>
       <p>Your commercial production slot is tentatively held on Ribhi's production calendar.</p>
       <div class="confirm-summary-pill" id="confirmSummaryPill">Date &amp; Slot info</div>
       <div class="confirm-cta-stack">
-        <a href="#" target="_blank" class="btn btn-main btn-block" id="whatsappActionBtn">
-          <span>Complete Confirmation on WhatsApp &rarr;</span>
+        <a href="#" target="_blank" class="btn btn-main btn-block neo-btn-primary" id="whatsappActionBtn">
+          <span>COMPLETE LOGISTICS ON WHATSAPP &rarr;</span>
         </a>
-        <button type="button" class="btn btn-secondary btn-block" id="dismissConfirmBtn">Done</button>
+        <button type="button" class="btn btn-secondary btn-block neo-option" id="dismissConfirmBtn">Close</button>
       </div>
     </div>
   </div>
 
-  <!-- Modern Clean Footer -->
+  <!-- Modern Neo-Brutalist Agency Footer -->
   <footer class="site-footer">
     <div class="container footer-wrapper">
       <div class="footer-top">
         <div class="footer-cta-text">
-          <span class="status-indicator">● Available for commercial shoots</span>
+          <span class="status-indicator">● TRANSMISSION ACTIVE // READY ON-SET</span>
           <h2>Let's build content that sells.</h2>
         </div>
-        <a href="#calendar" class="footer-action-btn">Book a Shoot &rarr;</a>
+        <a href="#calendar" class="footer-action-btn neo-btn-primary">Book a Shoot &rarr;</a>
       </div>
 
       <div class="footer-divider"></div>
@@ -670,7 +601,7 @@
       <div class="footer-middle">
         <div class="footer-brand-info">
           <a href="#top" class="footer-brand">Ribhi Queder<b>.</b></a>
-          <p>Vertical video &amp; commercial reel creator based in Amman, Jordan.</p>
+          <p>Software engineer &amp; commercial vertical director based in Amman, Jordan.</p>
         </div>
 
         <ul class="footer-contact-pills">
@@ -696,11 +627,12 @@
       </div>
 
       <div class="footer-bottom">
-        <span>&copy; 2026 Ribhi Queder. All rights reserved.</span>
+        <span>&copy; 2026 Ribhi Queder. Engineered with precision.</span>
         <div class="footer-quick-nav">
           <a href="#clips">Reels</a>
           <a href="#stills">Stills</a>
           <a href="#estimator">Pricing</a>
+          <a href="admin.html">Terminal</a>
           <a href="#top">Back to top &uarr;</a>
         </div>
       </div>
@@ -709,4 +641,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>

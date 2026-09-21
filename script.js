@@ -1,61 +1,352 @@
 /**
- * Ribhi Queder — Commercial Portfolio Engine
- * Featured Master Reel Spotlight & Sync, Interactive Split Grade,
- * Live Dynamic Synchronization with Admin LocalStorage (Reels, Stills & Packages),
- * Dynamic Availability Calendar, and Case Study Modal.
+ * Ribhi Queder — Neo-Brutalist & 3D Interactive Portfolio Engine
+ * Features:
+ * 1. Three.js Interactive 3D Wireframe Terrain & Code Grid (Adventures × Software)
+ * 2. Hardware 3D Card Tilt / Parallax Effect on Cards & Phone Frame
+ * 3. Optical Viewfinder Cursor with Dynamic Reticle Focus
+ * 4. Full Dynamic Sync with Admin LocalStorage (Reels, Stills, Packages)
+ * 5. Instant Estimator & WhatsApp Slot Dispatch
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
   /* ==========================================================================
-     0. DYNAMIC SYNCHRONIZATION WITH ADMIN LOCALSTORAGE (REELS, STILLS, PACKAGES)
+     1. THREE.JS 3D IPHONE 17 PRO MAX CINEMATIC CAMERA SYSTEM
+     ========================================================================== */
+  const canvas = document.getElementById('webgl3dCanvas');
+  if (canvas && typeof THREE !== 'undefined') {
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030305, 0.0012);
+
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 75);
+
+    const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // إضاءة سينمائية للمجسم لتعكس لمعان التيتانيوم وزجاج العدسات
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const cyanRimLight = new THREE.DirectionalLight(0x06b6d4, 2.5);
+    cyanRimLight.position.set(50, 40, 50);
+    scene.add(cyanRimLight);
+
+    const purpleBackLight = new THREE.DirectionalLight(0x6366f1, 2);
+    purpleBackLight.position.set(-50, -30, -40);
+    scene.add(purpleBackLight);
+
+    // الحاوية الكبرى للهاتف
+    const phoneRoot = new THREE.Group();
+    scene.add(phoneRoot);
+
+    // ==========================================
+    // أ) هيكل الآيفون 17 برو ماكس (Phone Body Chassis)
+    // ==========================================
+    const phoneWidth = 24;
+    const phoneHeight = 48;
+    const phoneDepth = 2.4;
+    const cornerRadius = 3.6;
+
+    // توليد شكل الجسم بزوايا الآيفون المنحنية
+    const bodyShape = new THREE.Shape();
+    const w = phoneWidth / 2, h = phoneHeight / 2, r = cornerRadius;
+    bodyShape.moveTo(-w + r, h);
+    bodyShape.lineTo(w - r, h);
+    bodyShape.quadraticCurveTo(w, h, w, h - r);
+    bodyShape.lineTo(w, -h + r);
+    bodyShape.quadraticCurveTo(w, -h, w - r, -h);
+    bodyShape.lineTo(-w + r, -h);
+    bodyShape.quadraticCurveTo(-w, -h, -w, -h + r);
+    bodyShape.lineTo(-w, h - r);
+    bodyShape.quadraticCurveTo(-w, h, -w + r, h);
+
+    const extrudeSettings = { depth: phoneDepth, bevelEnabled: true, bevelSegments: 6, steps: 1, bevelSize: 0.5, bevelThickness: 0.5 };
+    const phoneGeo = new THREE.ExtrudeGeometry(bodyShape, extrudeSettings);
+    phoneGeo.center();
+
+    // خامة تيتانيوم داكن مطفي (Black Titanium Metal)
+    const titaniumMat = new THREE.MeshStandardMaterial({
+      color: 0x0c0d14,
+      metalness: 0.92,
+      roughness: 0.28,
+      wireframe: false
+    });
+    const phoneMesh = new THREE.Mesh(phoneGeo, titaniumMat);
+    phoneRoot.add(phoneMesh);
+
+    // خطوط الشبكة التقنية على الشاسيه (Cyber Edge Lines)
+    const phoneWireframe = new THREE.LineSegments(
+      new THREE.EdgesGeometry(phoneGeo),
+      new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.35 })
+    );
+    phoneRoot.add(phoneWireframe);
+
+    // ==========================================
+    // ب) نتوء منصة الكاميرات (Pro Camera Plateau)
+    // ==========================================
+    const camPlateauShape = new THREE.Shape();
+    const pw = 12, ph = 12, pr = 2.4;
+    camPlateauShape.moveTo(-pw / 2 + pr, ph / 2);
+    camPlateauShape.lineTo(pw / 2 - pr, ph / 2);
+    camPlateauShape.quadraticCurveTo(pw / 2, ph / 2, pw / 2, ph / 2 - pr);
+    camPlateauShape.lineTo(pw / 2, -ph / 2 + pr);
+    camPlateauShape.quadraticCurveTo(pw / 2, -ph / 2, pw / 2 - pr, -ph / 2);
+    camPlateauShape.lineTo(-pw / 2 + pr, -ph / 2);
+    camPlateauShape.quadraticCurveTo(-pw / 2, -ph / 2, -pw / 2, -ph / 2 + pr);
+    camPlateauShape.lineTo(-pw / 2, ph / 2 - pr);
+    camPlateauShape.quadraticCurveTo(-pw / 2, ph / 2, -pw / 2 + pr, ph / 2);
+
+    const camPlateauGeo = new THREE.ExtrudeGeometry(camPlateauShape, { depth: 0.8, bevelEnabled: true, bevelSize: 0.3, bevelThickness: 0.3 });
+    camPlateauGeo.center();
+
+    const plateauMat = new THREE.MeshStandardMaterial({ color: 0x141520, metalness: 0.85, roughness: 0.2 });
+    const camPlateauMesh = new THREE.Mesh(camPlateauGeo, plateauMat);
+    // تثبيتها في أعلى يسار ظهر الهاتف
+    camPlateauMesh.position.set(-3.5, 14.5, (phoneDepth / 2) + 0.5);
+    phoneRoot.add(camPlateauMesh);
+
+    // ==========================================
+    // ج) منظومة العدسات الثلاثية السينمائية (Triple Cine Lenses)
+    // ==========================================
+    const lensPositions = [
+      { x: -5.8, y: 17 },  // العدسة العلوية (Main Cinema Lens)
+      { x: -5.8, y: 12 },  // العدسة السفلية (Telephoto Periscope)
+      { x: -1.4, y: 14.5 } // العدسة الجانبية (Ultra-Wide Macro)
+    ];
+
+    const lensRingMat = new THREE.MeshStandardMaterial({ color: 0x222634, metalness: 0.95, roughness: 0.15 });
+    const lensGlassMat = new THREE.MeshStandardMaterial({
+      color: 0x06b6d4,
+      metalness: 0.4,
+      roughness: 0.05,
+      emissive: 0x023440,
+      emissiveIntensity: 0.6
+    });
+
+    lensPositions.forEach((pos) => {
+      // إطار العدسة المعدني البارز
+      const ringGeo = new THREE.CylinderGeometry(2.3, 2.5, 1.2, 32);
+      ringGeo.rotateX(Math.PI / 2);
+      const ringMesh = new THREE.Mesh(ringGeo, lensRingMat);
+      ringMesh.position.set(pos.x, pos.y, (phoneDepth / 2) + 1.2);
+      phoneRoot.add(ringMesh);
+
+      // بؤبؤ زجاج العدسة العميق (Camera Aperture Eye)
+      const glassGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.4, 28);
+      glassGeo.rotateX(Math.PI / 2);
+      const glassMesh = new THREE.Mesh(glassGeo, lensGlassMat);
+      glassMesh.position.set(pos.x, pos.y, (phoneDepth / 2) + 1.7);
+      phoneRoot.add(glassMesh);
+
+      // حلقة ديافرام داخلية مضيئة
+      const innerApertureGeo = new THREE.RingGeometry(0.7, 1.1, 24);
+      const innerApertureMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+      const apertureMesh = new THREE.Mesh(innerApertureGeo, innerApertureMat);
+      apertureMesh.position.set(pos.x, pos.y, (phoneDepth / 2) + 1.95);
+      phoneRoot.add(apertureMesh);
+    });
+
+    // مستشعر LiDAR والفلاش الاستوديو
+    const flashGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.4, 16);
+    flashGeo.rotateX(Math.PI / 2);
+    const flashMesh = new THREE.Mesh(flashGeo, new THREE.MeshBasicMaterial({ color: 0xfff2b2 }));
+    flashMesh.position.set(-1.4, 18, (phoneDepth / 2) + 0.9);
+    phoneRoot.add(flashMesh);
+
+    const lidarGeo = new THREE.CylinderGeometry(0.6, 0.6, 0.4, 16);
+    lidarGeo.rotateX(Math.PI / 2);
+    const lidarMesh = new THREE.Mesh(lidarGeo, new THREE.MeshBasicMaterial({ color: 0x050508 }));
+    lidarMesh.position.set(-1.4, 11.2, (phoneDepth / 2) + 0.9);
+    phoneRoot.add(lidarMesh);
+
+    // ==========================================
+    // د) واجهة الشاشة والجزيرة التفاعلية (Front Screen & Dynamic Island)
+    // ==========================================
+    const screenGeo = new THREE.PlaneGeometry(phoneWidth - 1.2, phoneHeight - 1.2);
+    const screenMat = new THREE.MeshBasicMaterial({ color: 0x040407 });
+    const screenMesh = new THREE.Mesh(screenGeo, screenMat);
+    screenMesh.position.set(0, 0, -(phoneDepth / 2) - 0.55);
+    screenMesh.rotation.y = Math.PI; // موجهة نحو الجهة المعاكسة
+    phoneRoot.add(screenMesh);
+
+    // كبسولة الجزيرة التفاعلية (Dynamic Island Pill)
+    const islandGeo = new THREE.PlaneGeometry(5.2, 1.2);
+    const islandMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    const islandMesh = new THREE.Mesh(islandGeo, islandMat);
+    islandMesh.position.set(0, 19.5, -(phoneDepth / 2) - 0.58);
+    islandMesh.rotation.y = Math.PI;
+    phoneRoot.add(islandMesh);
+
+    // جزيئات بصرية عائمة تحيط بالهاتف (Floating Optics Dust)
+    const dustCount = 180;
+    const dustGeo = new THREE.BufferGeometry();
+    const dustPos = new Float32Array(dustCount * 3);
+    for (let i = 0; i < dustCount * 3; i += 3) {
+      dustPos[i] = (Math.random() - 0.5) * 120;
+      dustPos[i + 1] = (Math.random() - 0.5) * 90;
+      dustPos[i + 2] = (Math.random() - 0.5) * 60;
+    }
+    dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+    const dustMat = new THREE.PointsMaterial({ color: 0x06b6d4, size: 1.5, transparent: true, opacity: 0.45 });
+    const dustField = new THREE.Points(dustGeo, dustMat);
+    scene.add(dustField);
+
+    // ==========================================
+    // هـ) التفاعل مع حركة الماوس والسكرول
+    // ==========================================
+    let mouseX = 0, mouseY = 0;
+    let targetRotX = 0.2, targetRotY = -0.55;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX - window.innerWidth / 2) * 0.0012;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.0012;
+    });
+
+    let currentScroll = 0;
+    window.addEventListener('scroll', () => {
+      currentScroll = window.scrollY;
+    });
+
+    // وضعية الهاتف الافتراضية المائلة (Isometric Tech Angle)
+    phoneRoot.position.set(20, -2, -10);
+    phoneRoot.rotation.set(0.15, -0.6, 0.08);
+
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      requestAnimationFrame(animate);
+      const elapsed = clock.getElapsedTime();
+
+      // حساب زاوية الدوران مع السكرول (الهاتف يلف بزوايا ديناميكية تكشف عدسات الكاميرا)
+      const scrollRotation = (currentScroll * 0.0025);
+
+      targetRotY = -0.55 + (mouseX * 1.5) + Math.sin(scrollRotation) * 0.8;
+      targetRotX = 0.15 + (mouseY * 1.2) + Math.cos(scrollRotation) * 0.3;
+
+      phoneRoot.rotation.y += (targetRotY - phoneRoot.rotation.y) * 0.06;
+      phoneRoot.rotation.x += (targetRotX - phoneRoot.rotation.x) * 0.06;
+
+      // تمايل عائم خفيف كأنه معلق في الهواء (Cinematic Hover Float)
+      phoneRoot.position.y = -2 + Math.sin(elapsed * 1.5) * 1.5 - (currentScroll * 0.02);
+
+      // استجابة تفاعلية لموضع الماوس في الشاشات العريضة
+      if (window.innerWidth > 992) {
+        phoneRoot.position.x = 22 + (mouseX * 8);
+      } else {
+        phoneRoot.position.x = 0; // توسيط الهاتف للهواتف
+        phoneRoot.position.z = -18;
+      }
+
+      dustField.rotation.y = elapsed * 0.03;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  }
+
+  /* ==========================================================================
+     2. 3D CARD TILT EFFECT (MOTION-HEAVY INTERACTIVITY)
+     ========================================================================== */
+  const tiltCards = document.querySelectorAll('[data-tilt]');
+  tiltCards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+    });
+  });
+
+  /* ==========================================================================
+     3. VIEWFINDER CURSOR & CROSSHAIR FOCUS
+     ========================================================================== */
+  const vfCursor = document.getElementById('viewfinderCursor');
+  const glow = document.getElementById('cursorGlow');
+
+  if (vfCursor && glow) {
+    window.addEventListener('mousemove', (e) => {
+      vfCursor.style.left = `${e.clientX}px`;
+      vfCursor.style.top = `${e.clientY}px`;
+      glow.style.left = `${e.clientX}px`;
+      glow.style.top = `${e.clientY}px`;
+    });
+
+    document.querySelectorAll('.magnetic-target, .neo-card, .neo-option, a, button').forEach(target => {
+      target.addEventListener('mouseenter', () => vfCursor.classList.add('focus-mode'));
+      target.addEventListener('mouseleave', () => vfCursor.classList.remove('focus-mode'));
+    });
+  }
+
+  /* ==========================================================================
+     4. DYNAMIC SYNCHRONIZATION WITH ADMIN LOCALSTORAGE
      ========================================================================== */
   const storedPortfolio = JSON.parse(localStorage.getItem('rq_portfolio') || 'null');
   const storedPackages = JSON.parse(localStorage.getItem('rq_packages') || 'null');
 
-  // 1. Dynamic Reels Sync into Clips Carousel
+  // Sync Reels to Carousel
   if (storedPortfolio) {
     const reelsCarousel = document.getElementById('clipsCarousel');
     const activeReels = storedPortfolio.filter(m => m.type === 'reels' && !m.isDeleted);
 
     if (reelsCarousel && activeReels.length > 0) {
       reelsCarousel.innerHTML = activeReels.map(m => `
-        <div class="clip-card magnetic-target"
-             data-title="${m.title || 'Commercial Reel'}"
-             data-category="${m.category || 'Macro Demo'}"
+        <div class="clip-card neo-card magnetic-target" data-tilt
+             data-title="${m.title || 'Commercial Cut'}"
+             data-category="${m.category || 'Macro Cut'}"
              data-video-src="${m.url}"
-             data-views="${m.views || '150K Organic'}"
-             data-retention="${m.retention || '84% 3s Hold'}"
-             data-desc="${m.desc || 'High-retention mobile commercial engineered for direct conversions.'}"
+             data-views="${m.views || '180K Organic'}"
+             data-retention="${m.retention || '85% 3s Hold'}"
+             data-desc="${m.desc || 'High-retention vertical cut.'}"
              data-gear="${m.gear || 'Sony FX3 Cinema Line'}"
              data-software="${m.software || 'DaVinci Resolve Studio'}"
-             data-objective="${m.objective || 'Accelerate direct consumer conversions.'}"
-             data-hook="${m.hook || 'Pattern interrupt designed for feed capture.'}"
-             data-roi="${m.roi || '+35% organic engagement acceleration.'}">
+             data-objective="${m.objective || 'Accelerate conversion pull.'}"
+             data-hook="${m.hook || 'Immediate pattern interrupt.'}"
+             data-roi="${m.roi || '+35% organic engagement surge.'}">
           <div class="clip-media-box">
             <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
               <source src="${m.url}" type="video/mp4">
             </video>
-            <span class="card-badge">Inspect Strategy &nearr;</span>
+            <span class="card-badge">DECRYPT STRATEGY &nearr;</span>
           </div>
           <div class="clip-details">
-            <strong>${m.title}</strong>
-            <span>${m.category || 'Reel'}</span>
+            <div>
+              <strong>${m.title}</strong>
+              <span>${m.category || 'Vertical Reel'}</span>
+            </div>
+            <span class="telemetry-badge">${m.retention || '84% 3S_HOLD'}</span>
           </div>
         </div>
       `).join('');
     }
 
-    // 2. Dynamic Stills Sync into Grid
+    // Sync Stills to Gallery
     const stillsGallery = document.getElementById('stillsGallery');
     const activeStills = storedPortfolio.filter(m => m.type === 'stills' && !m.isDeleted);
 
     if (stillsGallery && activeStills.length > 0) {
       stillsGallery.innerHTML = activeStills.map(m => `
-        <div class="still-card" data-category="${m.category ? m.category.toLowerCase().replace(/[^a-z]/g, '') : 'product'}">
+        <div class="still-card neo-card" data-tilt data-category="${m.category ? m.category.toLowerCase().replace(/[^a-z]/g, '') : 'product'}">
           <div class="still-img-wrap">
             <img src="${m.url}" alt="${m.title}" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">View Asset &nearr;</span></div>
+            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>${m.title}</strong>
@@ -66,30 +357,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  /* ==========================================================================
-     1. FEATURED MASTER REEL SYNC & CONTROLS
-     ========================================================================== */
+  // Hero Featured Reel Setup
   const heroVideo = document.getElementById('heroFeaturedVideo');
   const heroTitle = document.getElementById('heroReelTitle');
   const heroCategory = document.getElementById('heroReelCategory');
   const audioBtn = document.getElementById('heroAudioToggleBtn');
 
-  // استدعاء البورتفوليو المخزن في localStorage لاختيار أول ريل نشط أو محدد من الأدمن
-  const portfolioData = JSON.parse(localStorage.getItem('rq_portfolio') || 'null');
-
-  if (portfolioData && heroVideo) {
-    // جلب الريل المميز المحدد أو أول ريل نشط
-    const featuredReel = portfolioData.find(m => m.type === 'reels' && !m.isDeleted && m.isFeatured) ||
-                         portfolioData.find(m => m.type === 'reels' && !m.isDeleted);
-
+  if (storedPortfolio && heroVideo) {
+    const featuredReel = storedPortfolio.find(m => m.type === 'reels' && !m.isDeleted);
     if (featuredReel) {
       heroVideo.src = featuredReel.url;
       if (heroTitle) heroTitle.textContent = featuredReel.title;
-      if (heroCategory) heroCategory.textContent = featuredReel.category || 'Featured Cut';
+      if (heroCategory) heroCategory.textContent = featuredReel.category || 'Commercial Showcase';
     }
   }
 
-  // التحكم بالصوت (Mute / Unmute)
   if (audioBtn && heroVideo) {
     audioBtn.addEventListener('click', () => {
       heroVideo.muted = !heroVideo.muted;
@@ -98,63 +380,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     2. INTERACTIVE BEFORE / AFTER COLOR GRADE SLIDER
-     ========================================================================== */
-  const gradeComparison = document.getElementById('gradeComparison');
-  const gradeFinalLayer = document.getElementById('gradeFinalLayer');
-  const gradeDivider = document.getElementById('gradeDivider');
-
-  if (gradeComparison && gradeFinalLayer && gradeDivider) {
-    let isSliding = false;
-
-    const setGradePosition = (xPos) => {
-      const rect = gradeComparison.getBoundingClientRect();
-      let clampedX = Math.max(0, Math.min(xPos - rect.left, rect.width));
-      let percentage = (clampedX / rect.width) * 100;
-
-      gradeFinalLayer.style.width = `${percentage}%`;
-      gradeDivider.style.left = `${percentage}%`;
-    };
-
-    gradeComparison.addEventListener('mousedown', (e) => {
-      isSliding = true;
-      setGradePosition(e.clientX);
-    });
-
-    window.addEventListener('mouseup', () => { isSliding = false; });
-    gradeComparison.addEventListener('mousemove', (e) => {
-      if (isSliding) setGradePosition(e.clientX);
-    });
-
-    // Touch Handling
-    gradeComparison.addEventListener('touchstart', (e) => {
-      isSliding = true;
-      setGradePosition(e.touches[0].clientX);
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => { isSliding = false; });
-    gradeComparison.addEventListener('touchmove', (e) => {
-      if (isSliding && e.touches[0]) setGradePosition(e.touches[0].clientX);
-    }, { passive: true });
-
-    // Keyboard Accessibility
-    gradeComparison.setAttribute('tabindex', '0');
-    gradeComparison.addEventListener('keydown', (e) => {
-      const currentWidth = parseFloat(gradeFinalLayer.style.width) || 50;
-      if (e.key === 'ArrowLeft') {
-        const next = Math.max(5, currentWidth - 5);
-        gradeFinalLayer.style.width = `${next}%`;
-        gradeDivider.style.left = `${next}%`;
-      } else if (e.key === 'ArrowRight') {
-        const next = Math.min(95, currentWidth + 5);
-        gradeFinalLayer.style.width = `${next}%`;
-        gradeDivider.style.left = `${next}%`;
-      }
-    });
-  }
-
-  /* ==========================================================================
-     3. REELS CAROUSEL & ACCURATE COUNTER
+     5. REELS CAROUSEL SLIDER & COUNTER
      ========================================================================== */
   const carousel = document.getElementById('clipsCarousel');
   const prevBtn = document.getElementById('prevReelBtn');
@@ -162,36 +388,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const counter = document.getElementById('carouselCounter');
 
   if (carousel && counter) {
-    const cards = carousel.querySelectorAll('.clip-card');
-    const totalCards = cards.length;
-
-    const updateAccurateCounter = () => {
+    const updateCounter = () => {
+      const cards = carousel.querySelectorAll('.clip-card');
       if (!cards[0]) return;
       const cardWidth = cards[0].offsetWidth + 24;
-      const scrollPos = carousel.scrollLeft;
-      const currentIdx = Math.min(Math.round(scrollPos / cardWidth) + 1, totalCards);
-      counter.textContent = `${String(currentIdx).padStart(2, '0')} / ${String(totalCards).padStart(2, '0')}`;
+      const currentIdx = Math.min(Math.round(carousel.scrollLeft / cardWidth) + 1, cards.length);
+      counter.textContent = `${String(currentIdx).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
     };
 
-    updateAccurateCounter();
-
-    if (nextBtn) {
-      nextBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: 300, behavior: 'smooth' });
-      });
-    }
-
-    if (prevBtn) {
-      prevBtn.addEventListener('click', () => {
-        carousel.scrollBy({ left: -300, behavior: 'smooth' });
-      });
-    }
-
-    carousel.addEventListener('scroll', updateAccurateCounter);
+    if (nextBtn) nextBtn.onclick = () => carousel.scrollBy({ left: 300, behavior: 'smooth' });
+    if (prevBtn) prevBtn.onclick = () => carousel.scrollBy({ left: -300, behavior: 'smooth' });
+    carousel.addEventListener('scroll', updateCounter);
+    updateCounter();
   }
 
   /* ==========================================================================
-     4. STILLS GALLERY FILTER & LIGHTBOX ENGINE
+     6. STILLS FILTER & LIGHTBOX ENGINE
      ========================================================================== */
   const filterTabs = document.querySelectorAll('.filter-tab');
   const lightbox = document.getElementById('stillsLightbox');
@@ -199,39 +411,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCaption = document.getElementById('lightboxCaption');
   const closeLightboxBtn = document.getElementById('closeLightboxBtn');
 
-  filterTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      filterTabs.forEach((t) => t.classList.remove('active'));
+  filterTabs.forEach(tab => {
+    tab.onclick = () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      const filterValue = tab.getAttribute('data-filter');
+      const val = tab.getAttribute('data-filter');
 
-      document.querySelectorAll('.still-card').forEach((card) => {
-        if (filterValue === 'all' || card.getAttribute('data-category').includes(filterValue)) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
+      document.querySelectorAll('.still-card').forEach(card => {
+        const cat = card.getAttribute('data-category') || '';
+        card.style.display = (val === 'all' || cat.includes(val)) ? 'flex' : 'none';
       });
-    });
+    };
   });
 
-  const bindStillCardClicks = () => {
-    document.querySelectorAll('.still-card').forEach((card) => {
-      card.addEventListener('click', () => {
+  const bindStillsLightbox = () => {
+    document.querySelectorAll('.still-card').forEach(card => {
+      card.onclick = () => {
         const img = card.querySelector('img');
         const title = card.querySelector('strong') ? card.querySelector('strong').textContent : 'Asset';
-        const format = card.querySelector('.format-pill') ? card.querySelector('.format-pill').textContent : '4:5';
-
         if (lightbox && lightboxImg && img) {
           lightboxImg.src = img.src;
-          lightboxCaption.textContent = `${title} (${format})`;
+          lightboxCaption.textContent = title;
           lightbox.classList.add('active');
           document.body.style.overflow = 'hidden';
         }
-      });
+      };
     });
   };
-  bindStillCardClicks();
+  bindStillsLightbox();
 
   const closeLightbox = () => {
     if (lightbox) {
@@ -240,16 +447,11 @@ document.addEventListener('DOMContentLoaded', () => {
       setTimeout(() => { if (lightboxImg) lightboxImg.src = ''; }, 200);
     }
   };
-
-  if (closeLightboxBtn) closeLightboxBtn.addEventListener('click', closeLightbox);
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-  }
+  if (closeLightboxBtn) closeLightboxBtn.onclick = closeLightbox;
+  if (lightbox) lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
 
   /* ==========================================================================
-     5. INSTANT INTERACTIVE PACKAGE ESTIMATOR (JOD PACKAGES)
+     7. ESTIMATOR (JOD PACKAGES) & DYNAMIC BREAKDOWN
      ========================================================================== */
   const defaultPackages = {
     starter: {
@@ -258,9 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
       deliverables: [
         '2x High-Retention 9:16 Vertical Reels',
         '4x Color-Graded Location/Product Photos',
-        '4K Ultra-HD Video Capture with Studio Lighting',
-        'On-Screen Dynamic Captions & Licensed Music',
-        '2 Rounds of Minor Cut Revisions'
+        '4K Capture + Audio SFX & Captions',
+        'Standard 48-72h Delivery'
       ]
     },
     growth: {
@@ -269,261 +470,188 @@ document.addEventListener('DOMContentLoaded', () => {
       deliverables: [
         '4x High-Retention 9:16 Vertical Reels',
         '8x Color-Graded Grid & Story Photos',
-        'Creative Hook & Script Concept Assistance',
-        '4K Resolution, Custom Color Grading & Captions',
+        'Hook Scripting & Fast-Paced Edit',
         'Standard 48-72h Delivery'
       ]
     },
     halfday: {
-      name: 'Complete Commercial Shoot',
-      price: 190,
+      name: 'Commercial Shoot',
+      price: 220,
       deliverables: [
-        'Complete Venue / Storefront Half-Day Production',
-        '7x High-Converting Vertical Reels (Demos + Walkthroughs)',
-        'Comprehensive 15+ Commercial Image Bank',
-        'Multi-angle Cinema Lighting & Sound Setup',
-        'Master Audio Mixing & Priority Processing'
+        'Full Venue Half-Day Production',
+        '7x High-Converting Vertical Reels',
+        'Comprehensive 15+ Image Bank',
+        'Cinema Rig + Master Sound Design'
       ]
     },
     monthly: {
       name: 'Monthly Content Retainer',
-      price: 320,
+      price: 450,
       deliverables: [
-        '12x Strategic Reels / Month (Consistent Brand Pipeline)',
-        '2 Dedicated Half-Day Production Sessions',
-        'Full Feed Photos Bank (4:5 & 1:1)',
-        'Dedicated Content Calendar & Topic Planning',
-        'Ongoing Revisions & Priority Turnaround'
+        '12x Strategic Reels / Month',
+        '2 Dedicated Production Sessions',
+        'Full Grid Photography Bank',
+        'Dedicated Content Calendar & Revisions'
       ]
     }
   };
 
   const packages = storedPackages ? { ...defaultPackages, ...storedPackages } : defaultPackages;
+  let currentPkg = 'starter';
+  let rushSurplus = 0;
 
-  let currentPackageKey = 'starter';
-  let speedSurplus = 0;
-  let currentSpeedLabel = 'Standard 48-72h';
+  const estPrice = document.getElementById('estPriceDisplay');
+  const estList = document.getElementById('estDeliverablesList');
 
-  const formatOptions = document.querySelectorAll('.format-option');
-  const speedBtns = document.querySelectorAll('.speed-btn');
-  const estPriceDisplay = document.getElementById('estPriceDisplay');
-  const estDeliverablesList = document.getElementById('estDeliverablesList');
-  const lockEstimateBtn = document.getElementById('lockEstimateBtn');
-
-  const calculateEstimate = () => {
-    const pkg = packages[currentPackageKey] || packages.starter;
-    let total = pkg.price + speedSurplus;
+  const updateEstimator = () => {
+    const pkg = packages[currentPkg] || packages.starter;
+    let total = pkg.price + rushSurplus;
 
     const addonScript = document.getElementById('addonScript');
     const addonVoiceover = document.getElementById('addonVoiceover');
     const addonExtraStills = document.getElementById('addonExtraStills');
 
-    let activeAddons = [];
-    if (addonScript && addonScript.checked) {
-      total += parseFloat(addonScript.value) || 15;
-      activeAddons.push('Hook Scripting & Ideation');
-    }
-    if (addonVoiceover && addonVoiceover.checked) {
-      total += parseFloat(addonVoiceover.value) || 20;
-      activeAddons.push('Studio Voiceover & Foley Sound');
-    }
-    if (addonExtraStills && addonExtraStills.checked) {
-      total += parseFloat(addonExtraStills.value) || 15;
-      activeAddons.push('Multi-Format Feed Covers (4:5 & 1:1)');
-    }
+    let addons = [];
+    if (addonScript && addonScript.checked) { total += 15; addons.push('Hook Scripting'); }
+    if (addonVoiceover && addonVoiceover.checked) { total += 20; addons.push('Studio Voiceover'); }
+    if (addonExtraStills && addonExtraStills.checked) { total += 15; addons.push('Matching Grid Covers'); }
 
-    if (estPriceDisplay) {
-      estPriceDisplay.textContent = `${total} JOD`;
-    }
+    if (estPrice) estPrice.textContent = `${total} JOD`;
 
-    if (estDeliverablesList) {
-      estDeliverablesList.innerHTML = '';
-      (pkg.deliverables || []).forEach(item => {
+    if (estList) {
+      estList.innerHTML = '';
+      (pkg.deliverables || []).forEach(d => {
         const li = document.createElement('li');
-        li.innerHTML = `<span class="check-icon">✓</span> ${item}`;
-        estDeliverablesList.appendChild(li);
+        li.innerHTML = `<span class="check-icon">✓</span> ${d}`;
+        estList.appendChild(li);
       });
-
-      activeAddons.forEach(addon => {
+      addons.forEach(a => {
         const li = document.createElement('li');
-        li.innerHTML = `<span class="check-icon">✓</span> [Add-on] ${addon}`;
-        estDeliverablesList.appendChild(li);
+        li.innerHTML = `<span class="check-icon">✓</span> [OPTIONAL] ${a}`;
+        estList.appendChild(li);
       });
-
-      const timeLi = document.createElement('li');
-      timeLi.innerHTML = `<span class="check-icon">✓</span> Turnaround: ${currentSpeedLabel}`;
-      estDeliverablesList.appendChild(timeLi);
     }
   };
 
-  formatOptions.forEach(opt => {
-    opt.addEventListener('click', () => {
-      formatOptions.forEach(o => o.classList.remove('active'));
+  document.querySelectorAll('.format-option').forEach(opt => {
+    opt.onclick = () => {
+      document.querySelectorAll('.format-option').forEach(o => o.classList.remove('active'));
       opt.classList.add('active');
-      const radio = opt.querySelector('input[type="radio"]');
+      const radio = opt.querySelector('input');
       if (radio) {
         radio.checked = true;
-        currentPackageKey = radio.value;
-        calculateEstimate();
+        currentPkg = radio.value;
+        updateEstimator();
       }
-    });
+    };
   });
 
-  speedBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      speedBtns.forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.speed-btn').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const speed = btn.dataset.speed;
-      speedSurplus = speed === 'rush' ? 25 : 0;
-      currentSpeedLabel = speed === 'rush' ? '24-Hour Same-Day Rush (+25 JOD)' : 'Standard 48-72h Delivery';
-      calculateEstimate();
-    });
+      rushSurplus = btn.dataset.speed === 'rush' ? 25 : 0;
+      updateEstimator();
+    };
   });
 
   document.querySelectorAll('.addon-item input').forEach(input => {
-    input.addEventListener('change', calculateEstimate);
+    input.onchange = updateEstimator;
   });
 
+  const lockEstimateBtn = document.getElementById('lockEstimateBtn');
   if (lockEstimateBtn) {
-    lockEstimateBtn.addEventListener('click', () => {
-      const shootTypeSelect = document.getElementById('shootType');
-      const clientBrief = document.getElementById('clientBrief');
-      const selectedPkg = packages[currentPackageKey] || packages.starter;
-
-      if (shootTypeSelect) {
-        shootTypeSelect.value = currentPackageKey;
-      }
-
-      if (clientBrief) {
-        clientBrief.value = `[Pre-filled Estimate] Package: ${selectedPkg.name} | Turnaround: ${currentSpeedLabel} | Total: ${estPriceDisplay.textContent}`;
-      }
-
-      const calSection = document.getElementById('calendar') || document.getElementById('booking');
-      if (calSection) {
-        calSection.scrollIntoView({ behavior: 'smooth' });
-        const card = document.querySelector('.booking-slot-card');
-        if (card) {
-          card.style.borderColor = '#6366f1';
-          card.style.boxShadow = '0 0 35px rgba(99, 102, 241, 0.4)';
-          setTimeout(() => {
-            card.style.borderColor = '';
-            card.style.boxShadow = '';
-          }, 2400);
-        }
-      }
-    });
+    lockEstimateBtn.onclick = () => {
+      const typeSelect = document.getElementById('shootType');
+      const brief = document.getElementById('clientBrief');
+      if (typeSelect) typeSelect.value = currentPkg;
+      if (brief) brief.value = `[Estimator Total: ${estPrice.textContent}] Package: ${(packages[currentPkg] || {}).name}`;
+      const cal = document.getElementById('calendar');
+      if (cal) cal.scrollIntoView({ behavior: 'smooth' });
+    };
   }
-
-  calculateEstimate();
+  updateEstimator();
 
   /* ==========================================================================
-     6. DEDICATED FULL-PAGE CASE STUDY OVERLAY
+     8. CASE STUDY OVERLAY
      ========================================================================== */
   const projectOverlay = document.getElementById('projectPageOverlay');
   const closeProjectBtn = document.getElementById('closeProjectPageBtn');
-  const projectPageVideo = document.getElementById('projectPageVideo');
-  const projTitle = document.getElementById('projTitle');
-  const projCategory = document.getElementById('projCategory');
-  const projViews = document.getElementById('projViews');
-  const projObjective = document.getElementById('projObjective');
-  const projHook = document.getElementById('projHook');
-  const projDesc = document.getElementById('projDesc');
-  const projRoi = document.getElementById('projRoi');
-  const projGear = document.getElementById('projGear');
-  const projSoftware = document.getElementById('projSoftware');
-  const projRetention = document.getElementById('projRetention');
-  const projBookBtn = document.getElementById('projBookBtn');
+  const projectVideo = document.getElementById('projectPageVideo');
 
-  const attachClipCardEvents = () => {
+  const attachCaseStudyClicks = () => {
     document.querySelectorAll('.clip-card').forEach(card => {
-      card.addEventListener('click', () => {
-        projTitle.textContent = card.dataset.title;
-        projCategory.textContent = card.dataset.category;
-        projViews.textContent = card.dataset.views;
-        projObjective.textContent = card.dataset.objective || 'Craft high-retention commercial vertical asset.';
-        projHook.textContent = card.dataset.hook || '2-second pattern interrupt.';
-        projDesc.textContent = card.dataset.desc;
-        projRoi.textContent = card.dataset.roi || 'Significant organic conversion acceleration.';
-        projGear.textContent = card.dataset.gear;
-        projSoftware.textContent = card.dataset.software;
-        projRetention.textContent = card.dataset.retention;
+      card.onclick = () => {
+        document.getElementById('projTitle').textContent = card.dataset.title;
+        document.getElementById('projCategory').textContent = card.dataset.category;
+        document.getElementById('projViews').textContent = card.dataset.views;
+        document.getElementById('projObjective').textContent = card.dataset.objective;
+        document.getElementById('projHook').textContent = card.dataset.hook;
+        document.getElementById('projRoi').textContent = card.dataset.roi;
+        document.getElementById('projGear').textContent = card.dataset.gear;
+        document.getElementById('projSoftware').textContent = card.dataset.software;
+        document.getElementById('projRetention').textContent = card.dataset.retention;
 
-        projectPageVideo.src = card.dataset.videoSrc;
-        projectPageVideo.play().catch(() => {});
-
+        projectVideo.src = card.dataset.videoSrc;
+        projectVideo.play().catch(() => {});
         projectOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-      });
+      };
     });
   };
-  attachClipCardEvents();
+  attachCaseStudyClicks();
 
-  const closeProjectPage = () => {
-    projectOverlay.classList.remove('active');
-    document.body.style.overflow = '';
-    projectPageVideo.pause();
-    projectPageVideo.src = '';
-  };
-
-  if (closeProjectBtn) closeProjectBtn.addEventListener('click', closeProjectPage);
-  if (projBookBtn) projBookBtn.addEventListener('click', closeProjectPage);
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && projectOverlay.classList.contains('active')) {
-      closeProjectPage();
+  const closeCaseStudy = () => {
+    if (projectOverlay) {
+      projectOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+      projectVideo.pause();
+      projectVideo.src = '';
     }
-  });
+  };
+  if (closeProjectBtn) closeProjectBtn.onclick = closeCaseStudy;
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCaseStudy(); });
 
   /* ==========================================================================
-     7. LIVE BOOKING CALENDAR & AVAILABILITY ENGINE
+     9. PRODUCTION CALENDAR & WHATSAPP DISPATCH
      ========================================================================== */
-  const monthNames = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
-
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   let currentDate = new Date(2026, 8, 16);
   let selectedDay = 18;
+  let activeTimeSlot = '10:00 AM';
 
   const scheduleData = {
     16: { status: 'partial', slots: ['02:00 PM', '05:00 PM'], booked: ['10:00 AM'] },
-    17: { status: 'booked', slots: [], booked: ['10:00 AM', '02:00 PM', '06:00 PM'] },
+    17: { status: 'booked', slots: [], booked: ['Full Day Filming'] },
     18: { status: 'available', slots: ['10:00 AM', '01:30 PM', '04:00 PM', '07:00 PM'], booked: [] },
     19: { status: 'available', slots: ['11:00 AM', '03:00 PM', '06:30 PM'], booked: [] },
-    20: { status: 'booked', slots: [], booked: ['09:00 AM', '01:00 PM', '05:00 PM'] },
-    21: { status: 'partial', slots: ['04:00 PM'], booked: ['11:00 AM', '01:00 PM'] },
-    22: { status: 'available', slots: ['10:00 AM', '02:00 PM', '05:00 PM'], booked: [] },
-    23: { status: 'available', slots: ['12:00 PM', '03:30 PM', '06:00 PM'], booked: [] },
-    24: { status: 'partial', slots: ['01:00 PM', '05:30 PM'], booked: ['10:00 AM'] },
-    25: { status: 'booked', slots: [], booked: ['Full Day Commercial Shoot'] },
-    26: { status: 'available', slots: ['10:00 AM', '02:00 PM', '06:00 PM'], booked: [] }
+    20: { status: 'booked', slots: [], booked: ['Commercial Set'] },
+    21: { status: 'partial', slots: ['04:00 PM'], booked: ['11:00 AM'] },
+    22: { status: 'available', slots: ['10:00 AM', '02:00 PM', '05:00 PM'], booked: [] }
   };
 
-  const calendarDaysEl = document.getElementById('calendarDays');
-  const calendarMonthEl = document.getElementById('calendarMonth');
-  const calendarYearEl = document.getElementById('calendarYear');
-  const prevMonthBtn = document.getElementById('prevMonthBtn');
-  const nextMonthBtn = document.getElementById('nextMonthBtn');
+  const calDays = document.getElementById('calendarDays');
+  const calMonth = document.getElementById('calendarMonth');
+  const calYear = document.getElementById('calendarYear');
   const selectedDateText = document.getElementById('selectedDateText');
-  const dateStatusPill = document.getElementById('dateStatusPill');
   const timeSlotsList = document.getElementById('timeSlotsList');
-  let activeTimeSlot = '10:00 AM';
 
-  function renderCalendar() {
+  function renderCal() {
+    if (!calDays) return;
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    calendarMonthEl.textContent = monthNames[month];
-    calendarYearEl.textContent = year;
-    calendarDaysEl.innerHTML = '';
+    if (calMonth) calMonth.textContent = monthNames[month];
+    if (calYear) calYear.textContent = year;
+    calDays.innerHTML = '';
 
-    const firstDayIndex = new Date(year, month, 1).getDay();
+    const firstDay = new Date(year, month, 1).getDay();
     const totalDays = new Date(year, month + 1, 0).getDate();
 
-    for (let i = 0; i < firstDayIndex; i++) {
+    for (let i = 0; i < firstDay; i++) {
       const blank = document.createElement('div');
       blank.className = 'cal-day disabled';
-      calendarDaysEl.appendChild(blank);
+      calDays.appendChild(blank);
     }
 
     for (let d = 1; d <= totalDays; d++) {
@@ -531,228 +659,141 @@ document.addEventListener('DOMContentLoaded', () => {
       dayEl.className = 'cal-day';
       dayEl.innerHTML = `<span>${d}</span>`;
 
-      if (year === 2026 && month === 8 && d < 16) {
-        dayEl.classList.add('disabled');
-      } else {
-        const dayInfo = scheduleData[d];
-        if (dayInfo) {
-          const dotsContainer = document.createElement('div');
-          dotsContainer.className = 'day-dots';
-
-          if (dayInfo.status === 'available') {
-            dotsContainer.innerHTML = '<span class="dot-indicator dot-available"></span><span class="dot-indicator dot-available"></span>';
-          } else if (dayInfo.status === 'partial') {
-            dotsContainer.innerHTML = '<span class="dot-indicator dot-partial"></span>';
-          } else if (dayInfo.status === 'booked') {
-            dotsContainer.innerHTML = '<span class="dot-indicator dot-booked"></span>';
-          }
-          dayEl.appendChild(dotsContainer);
-        }
-
-        if (d === selectedDay) {
-          dayEl.classList.add('selected');
-          updateSlotDetails(d, dayInfo);
-        }
-
-        dayEl.addEventListener('click', () => {
-          document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
-          dayEl.classList.add('selected');
-          selectedDay = d;
-          updateSlotDetails(d, scheduleData[d]);
-        });
+      const info = scheduleData[d];
+      if (info) {
+        const dotBox = document.createElement('div');
+        dotBox.className = 'day-dots';
+        dotBox.innerHTML = `<span class="dot-indicator dot-${info.status}"></span>`;
+        dayEl.appendChild(dotBox);
       }
 
-      calendarDaysEl.appendChild(dayEl);
+      if (d === selectedDay) {
+        dayEl.classList.add('selected');
+        updateSlotList(d, info);
+      }
+
+      dayEl.onclick = () => {
+        document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
+        dayEl.classList.add('selected');
+        selectedDay = d;
+        updateSlotList(d, scheduleData[d]);
+      };
+      calDays.appendChild(dayEl);
     }
   }
 
-  function updateSlotDetails(day, info) {
-    const month = monthNames[currentDate.getMonth()];
-    selectedDateText.textContent = `${month} ${day}, ${currentDate.getFullYear()}`;
+  function updateSlotList(day, info) {
+    if (selectedDateText) selectedDateText.textContent = `${monthNames[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`;
+    if (!timeSlotsList) return;
     timeSlotsList.innerHTML = '';
-    activeTimeSlot = null;
 
-    if (!info || (!info.slots.length && !info.booked.length)) {
-      dateStatusPill.textContent = 'Open Slate';
-      dateStatusPill.style.color = '#9ca3af';
-      dateStatusPill.style.background = 'rgba(255, 255, 255, 0.08)';
-      timeSlotsList.innerHTML = '<div class="no-slots-placeholder">Flexible production schedule. Choose any morning or afternoon slot.</div>';
-      activeTimeSlot = 'Flexible Slot';
+    if (!info || !info.slots.length) {
+      timeSlotsList.innerHTML = '<div style="grid-column: span 2; font-size:0.8rem; color:#ef4444;">No open windows for this date. Please select another day.</div>';
+      activeTimeSlot = null;
       return;
     }
 
-    if (info.status === 'booked') {
-      dateStatusPill.textContent = 'Fully Booked';
-      dateStatusPill.style.color = '#ef4444';
-      dateStatusPill.style.background = 'rgba(239, 68, 68, 0.15)';
-      timeSlotsList.innerHTML = '<div class="no-slots-placeholder" style="color:#ef4444">Entire day committed to active commercial filming. Please select another date.</div>';
-      return;
-    }
-
-    if (info.status === 'available') {
-      dateStatusPill.textContent = 'Fully Open (3+ Slots)';
-      dateStatusPill.style.color = '#10b981';
-      dateStatusPill.style.background = 'rgba(16, 185, 129, 0.15)';
-    } else {
-      dateStatusPill.textContent = 'Limited (1-2 Slots Left)';
-      dateStatusPill.style.color = '#f59e0b';
-      dateStatusPill.style.background = 'rgba(245, 158, 11, 0.15)';
-    }
-
-    info.slots.forEach((time, idx) => {
+    info.slots.forEach((slot, idx) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'time-slot-btn';
-      if (idx === 0) {
-        btn.classList.add('active');
-        activeTimeSlot = time;
-      }
-      btn.textContent = time;
-      btn.addEventListener('click', () => {
+      btn.className = `time-slot-btn ${idx === 0 ? 'active' : ''}`;
+      if (idx === 0) activeTimeSlot = slot;
+      btn.textContent = slot;
+      btn.onclick = () => {
         document.querySelectorAll('.time-slot-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        activeTimeSlot = time;
-      });
-      timeSlotsList.appendChild(btn);
-    });
-
-    info.booked.forEach(time => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'time-slot-btn booked';
-      btn.textContent = time;
-      btn.disabled = true;
+        activeTimeSlot = slot;
+      };
       timeSlotsList.appendChild(btn);
     });
   }
 
-  prevMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    renderCalendar();
-  });
+  const prevMonth = document.getElementById('prevMonthBtn');
+  const nextMonth = document.getElementById('nextMonthBtn');
+  if (prevMonth) prevMonth.onclick = () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCal(); };
+  if (nextMonth) nextMonth.onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCal(); };
+  renderCal();
 
-  nextMonthBtn.addEventListener('click', () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-  });
-
-  renderCalendar();
-
-  // Booking Form Submission & WhatsApp Trigger
+  // Booking Form Submit & WhatsApp Dispatch
   const bookingForm = document.getElementById('bookingForm');
   const confirmModal = document.getElementById('bookingConfirmModal');
-  const closeConfirmModalBtn = document.getElementById('closeConfirmModalBtn');
-  const dismissConfirmBtn = document.getElementById('dismissConfirmBtn');
-  const confirmSummaryPill = document.getElementById('confirmSummaryPill');
-  const whatsappActionBtn = document.getElementById('whatsappActionBtn');
+  const waBtn = document.getElementById('whatsappActionBtn');
+  const pill = document.getElementById('confirmSummaryPill');
 
   if (bookingForm) {
-    bookingForm.addEventListener('submit', (e) => {
+    bookingForm.onsubmit = (e) => {
       e.preventDefault();
       const name = document.getElementById('clientName').value.trim();
       const typeSelect = document.getElementById('shootType');
-      const typeText = typeSelect.options[typeSelect.selectedIndex].text;
+      const type = typeSelect.options[typeSelect.selectedIndex].text;
       const brief = document.getElementById('clientBrief').value.trim();
 
       if (!activeTimeSlot) {
-        alert('Please choose an available time slot above first.');
+        alert('Please choose an available filming slot first.');
         return;
       }
 
       const dateStr = `${monthNames[currentDate.getMonth()]} ${selectedDay}, ${currentDate.getFullYear()}`;
-      confirmSummaryPill.textContent = `${name} · ${dateStr} at ${activeTimeSlot} · ${typeText}`;
+      if (pill) pill.textContent = `${name} // ${dateStr} @ ${activeTimeSlot} // ${type}`;
 
-      const waMessage = encodeURIComponent(
-        `Hello Ribhi! I've booked a production slot on your site:\n\n` +
-        `• Name/Brand: ${name}\n` +
-        `• Date: ${dateStr}\n` +
-        `• Time Window: ${activeTimeSlot}\n` +
-        `• Project Scope: ${typeText}\n` +
-        (brief ? `• Brief: ${brief}\n\n` : `\n`) +
-        `Looking forward to confirming shoot logistics!`
+      const msg = encodeURIComponent(
+        `Hi Ribhi! Production reservation dispatched from your site:\n\n` +
+        `• Client/Brand: ${name}\n` +
+        `• Shoot Date: ${dateStr}\n` +
+        `• Time Slot: ${activeTimeSlot}\n` +
+        `• Format Scope: ${type}\n` +
+        (brief ? `• Strategy Brief: ${brief}\n\n` : `\n`) +
+        `Let's confirm the production logistics!`
       );
 
-      whatsappActionBtn.href = `https://wa.me/962790000000?text=${waMessage}`;
-      confirmModal.classList.add('active');
-    });
+      if (waBtn) waBtn.href = `https://wa.me/962790000000?text=${msg}`;
+      if (confirmModal) confirmModal.classList.add('active');
+    };
   }
 
-  const closeConfirmation = () => {
-    confirmModal.classList.remove('active');
-    bookingForm.reset();
-  };
-
-  if (closeConfirmModalBtn) closeConfirmModalBtn.addEventListener('click', closeConfirmation);
-  if (dismissConfirmBtn) dismissConfirmBtn.addEventListener('click', closeConfirmation);
+  const closeConfirm = document.getElementById('closeConfirmModalBtn');
+  const dismissConfirm = document.getElementById('dismissConfirmBtn');
+  if (closeConfirm) closeConfirm.onclick = () => confirmModal.classList.remove('active');
+  if (dismissConfirm) dismissConfirm.onclick = () => confirmModal.classList.remove('active');
 
   /* ==========================================================================
-     8. VERIFIED CLIENT REVIEW ENGINE & MODAL
+     10. REVIEWS MODAL
      ========================================================================== */
-  const openRevModal = document.getElementById('openReviewModalBtn');
-  const closeRevModal = document.getElementById('closeReviewModalBtn');
-  const reviewModal = document.getElementById('reviewModal');
-  const newReviewForm = document.getElementById('newReviewForm');
+  const openRev = document.getElementById('openReviewModalBtn');
+  const closeRev = document.getElementById('closeReviewModalBtn');
+  const revModal = document.getElementById('reviewModal');
+  const revForm = document.getElementById('newReviewForm');
   const reviewsGrid = document.getElementById('reviewsGrid');
 
-  if (openRevModal && reviewModal) {
-    openRevModal.addEventListener('click', () => reviewModal.classList.add('active'));
-    closeRevModal.addEventListener('click', () => reviewModal.classList.remove('active'));
+  if (openRev && revModal) openRev.onclick = () => revModal.classList.add('active');
+  if (closeRev && revModal) closeRev.onclick = () => revModal.classList.remove('active');
 
-    reviewModal.addEventListener('click', (e) => {
-      if (e.target === reviewModal) reviewModal.classList.remove('active');
-    });
-  }
-
-  if (newReviewForm && reviewsGrid) {
-    newReviewForm.addEventListener('submit', (e) => {
+  if (revForm && reviewsGrid) {
+    revForm.onsubmit = (e) => {
       e.preventDefault();
       const author = document.getElementById('revAuthor').value.trim();
       const project = document.getElementById('revProject').value.trim();
-      const ratingNum = parseInt(document.getElementById('revRating').value);
       const content = document.getElementById('revContent').value.trim();
 
-      const initials = author.substring(0, 2).toUpperCase() || 'RQ';
-      const stars = '★'.repeat(ratingNum) + '☆'.repeat(5 - ratingNum);
-
-      const newCard = document.createElement('div');
-      newCard.className = 'review-card';
-      newCard.innerHTML = `
+      const card = document.createElement('div');
+      card.className = 'review-card neo-card';
+      card.setAttribute('data-tilt', '');
+      card.innerHTML = `
         <div class="review-top">
-          <div class="client-avatar">${initials}</div>
+          <div class="client-avatar">${author.substring(0, 2).toUpperCase()}</div>
           <div class="client-meta">
             <h4>${author}</h4>
             <span>${project}</span>
           </div>
-          <div class="review-stars">${stars}</div>
+          <div class="review-stars">★★★★★</div>
         </div>
         <p class="review-quote">"${content}"</p>
-        <div class="review-date">Verified Partner · Just now</div>
+        <div class="review-date">VERIFIED COMMERCIAL PARTNER</div>
       `;
-
-      reviewsGrid.prepend(newCard);
-      newReviewForm.reset();
-      reviewModal.classList.remove('active');
-    });
-  }
-
-  /* ==========================================================================
-     9. HARDWARE-ACCELERATED SPOTLIGHT CURSOR & MAGNETIC HOVER
-     ========================================================================== */
-  const cursorDot = document.getElementById('cursorDot');
-  const cursorGlow = document.getElementById('cursorGlow');
-
-  if (cursorDot && cursorGlow) {
-    window.addEventListener('mousemove', (e) => {
-      cursorDot.style.left = `${e.clientX}px`;
-      cursorDot.style.top = `${e.clientY}px`;
-      cursorGlow.style.left = `${e.clientX}px`;
-      cursorGlow.style.top = `${e.clientY}px`;
-    });
-
-    document.querySelectorAll('.magnetic-target, .btn, .clip-card, .still-card').forEach(el => {
-      el.addEventListener('mouseenter', () => cursorDot.classList.add('magnetic-active'));
-      el.addEventListener('mouseleave', () => cursorDot.classList.remove('magnetic-active'));
-    });
+      reviewsGrid.prepend(card);
+      revForm.reset();
+      revModal.classList.remove('active');
+    };
   }
 
 });
