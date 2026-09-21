@@ -1928,3 +1928,82 @@ nav {
     height: 440px;
   }
 }
+/* ==========================================================================
+   FIXES: CASE STUDY MODAL SPACING & DETAIL TYPOGRAPHY
+   ========================================================================== */
+.project-details-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* مسافة واضحة بين كل كتلة والأخرى */
+}
+
+.project-details-column h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  line-height: 1.15;
+  margin: 8px 0 16px 0;
+  color: #fff;
+  letter-spacing: -1px;
+}
+
+.proj-section-block {
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  padding: 16px 20px;
+  border-radius: 12px;
+}
+
+.proj-section-block h3 {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 1px;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.proj-section-block p {
+  font-size: 0.95rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.proj-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 10px 0 18px 0;
+}
+
+.neo-spec {
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  padding: 14px 16px;
+  border-radius: 10px;
+}
+
+.neo-spec span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-dim);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.neo-spec strong {
+  font-size: 0.9rem;
+  color: #fff;
+  display: block;
+}
+
+/* حل مشكلة فلترة الصور */
+.still-card.is-hidden {
+  display: none !important;
+}
+
+.still-card {
+  display: flex !important; /* ضمان بقاء البطاقة كـ Flex عمودي دون تكسر */
+  flex-direction: column;
+}

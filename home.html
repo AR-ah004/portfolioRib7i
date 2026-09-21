@@ -7,6 +7,8 @@
   <title>Ribhi Queder — Software Engineer, Commercial Director & Adventurer</title>
   <meta name="description"
     content="Commercial 9:16 vertical director, software engineer, and adventure filmmaker based in Amman, Jordan." />
+    <!-- Supabase Client CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- Typography: Syne (Futuristic/Brutalist) + Space Grotesk + JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,19 +77,16 @@
 
         <div class="hero-cine-content">
           <h1 class="hero-cine-title">
-            Directing <br>
-            <span class="glow-word">Attention.</span>
+            Ribhi  <br>
+            <span class="glow-word">Quaider.</span>
           </h1>
 
           <p class="hero-cine-sub">
-            Commercial Director &amp; Software Engineer. Crafting high-retention and visual systems that convert.
+            Professional photographer and videographer based in Amman, Jordan.
+            Software Engineering student at Applied Science Private University (ASU) — calibrating optical composition with technical discipline.
           </p>
 
-          <div class="hero-trinity-tags">
-            <span class="tag-pill active">🎬 Commercial Cinema</span>
-            <span class="tag-pill">💻 Software Logic</span>
-            <span class="tag-pill">🧭 Outdoor Expeditions</span>
-          </div>
+          
 
           <div class="hero-actions-group">
             <a href="#clips" class="btn-cine-primary">Explore Portfolio &darr;</a>
@@ -140,7 +139,7 @@
           data-hook="0.5-second macro snap interrupt." data-roi="+38% direct retail sales acceleration.">
           <div class="clip-media-box">
             <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
-              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+              <source src="Snapinta.App_AQP0Lt4wemEN3uK39Uzy4XJjjerHsWcwryUnaoLsndU4juULGl7d6GA52esZWbSM0IGjyJVbxRO8yKWqoaQJvMyNL0MxOZ_rf5rPZv8.mp4" type="video/mp4">
             </video>
             <span class="card-badge">DECRYPT STRATEGY &nearr;</span>
           </div>
@@ -149,7 +148,7 @@
               <strong>Shelf Pick-up</strong>
               <span>Macro Demo</span>
             </div>
-            <span class="telemetry-badge">86% 3S_HOLD</span>
+            <span class="telemetry-badge">280K VIEWS</span>
           </div>
         </div>
 
@@ -164,7 +163,7 @@
           data-roi="Record foot-traffic weekend.">
           <div class="clip-media-box">
             <video class="carousel-video" autoplay loop muted playsinline preload="metadata">
-              <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4" type="video/mp4">
+              <source src="reel-1.mp4" type="video/mp4">
             </video>
             <span class="card-badge">DECRYPT STRATEGY &nearr;</span>
           </div>
@@ -198,48 +197,12 @@
       <div class="stills-grid-container" id="stillsGallery">
         <div class="still-card neo-card" data-tilt data-category="product">
           <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop"
+            <img src="475265914_18480353179047789_1242674893578482468_n.jpg"
               alt="Minimal Timepiece" loading="lazy">
             <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
           </div>
           <div class="still-meta">
             <strong>Minimal Timepiece</strong>
-            <span class="format-pill">4:5 Feed</span>
-          </div>
-        </div>
-
-        <div class="still-card neo-card" data-tilt data-category="culinary">
-          <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1000&auto=format&fit=crop"
-              alt="Artisan Burger Set" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
-          </div>
-          <div class="still-meta">
-            <strong>Artisan Burger Set</strong>
-            <span class="format-pill">4:5 Feed</span>
-          </div>
-        </div>
-
-        <div class="still-card neo-card" data-tilt data-category="product">
-          <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop"
-              alt="Studio Audio Equipment" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
-          </div>
-          <div class="still-meta">
-            <strong>Acoustic Hardware</strong>
-            <span class="format-pill">1:1 Square</span>
-          </div>
-        </div>
-
-        <div class="still-card neo-card" data-tilt data-category="lifestyle">
-          <div class="still-img-wrap">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop"
-              alt="Sneaker Macro Texture" loading="lazy">
-            <div class="still-overlay"><span class="preview-btn">INSPECT STILL &nearr;</span></div>
-          </div>
-          <div class="still-meta">
-            <strong>Runner Macro Texture</strong>
             <span class="format-pill">4:5 Feed</span>
           </div>
         </div>
@@ -638,7 +601,11 @@
       </div>
     </div>
   </footer>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
+  <!-- 2. ملف الإعدادات الخاص بك -->
+  <script src="firebase-config.js"></script>
   <script src="script.js"></script>
 </body>
 

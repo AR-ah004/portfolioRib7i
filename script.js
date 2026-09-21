@@ -1,11 +1,9 @@
 /**
  * Ribhi Queder — Neo-Brutalist & 3D Interactive Portfolio Engine
- * Features:
- * 1. Three.js Interactive 3D Wireframe Terrain & Code Grid (Adventures × Software)
- * 2. Hardware 3D Card Tilt / Parallax Effect on Cards & Phone Frame
- * 3. Optical Viewfinder Cursor with Dynamic Reticle Focus
- * 4. Full Dynamic Sync with Admin LocalStorage (Reels, Stills, Packages)
- * 5. Instant Estimator & WhatsApp Slot Dispatch
+ * Updated & Fixed:
+ * 1. Video Autoplay & Modal Source Sync
+ * 2. Non-breaking CSS-class Stills Filtering
+ * 3. Clean Estimator Calculation (No Add-ons)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -25,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // إضاءة سينمائية للمجسم لتعكس لمعان التيتانيوم وزجاج العدسات
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
@@ -37,19 +34,14 @@ document.addEventListener('DOMContentLoaded', () => {
     purpleBackLight.position.set(-50, -30, -40);
     scene.add(purpleBackLight);
 
-    // الحاوية الكبرى للهاتف
     const phoneRoot = new THREE.Group();
     scene.add(phoneRoot);
 
-    // ==========================================
-    // أ) هيكل الآيفون 17 برو ماكس (Phone Body Chassis)
-    // ==========================================
     const phoneWidth = 24;
     const phoneHeight = 48;
     const phoneDepth = 2.4;
     const cornerRadius = 3.6;
 
-    // توليد شكل الجسم بزوايا الآيفون المنحنية
     const bodyShape = new THREE.Shape();
     const w = phoneWidth / 2, h = phoneHeight / 2, r = cornerRadius;
     bodyShape.moveTo(-w + r, h);
@@ -66,7 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneGeo = new THREE.ExtrudeGeometry(bodyShape, extrudeSettings);
     phoneGeo.center();
 
-    // خامة تيتانيوم داكن مطفي (Black Titanium Metal)
     const titaniumMat = new THREE.MeshStandardMaterial({
       color: 0x0c0d14,
       metalness: 0.92,
@@ -76,16 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const phoneMesh = new THREE.Mesh(phoneGeo, titaniumMat);
     phoneRoot.add(phoneMesh);
 
-    // خطوط الشبكة التقنية على الشاسيه (Cyber Edge Lines)
     const phoneWireframe = new THREE.LineSegments(
       new THREE.EdgesGeometry(phoneGeo),
       new THREE.LineBasicMaterial({ color: 0x06b6d4, transparent: true, opacity: 0.35 })
     );
     phoneRoot.add(phoneWireframe);
 
-    // ==========================================
-    // ب) نتوء منصة الكاميرات (Pro Camera Plateau)
-    // ==========================================
     const camPlateauShape = new THREE.Shape();
     const pw = 12, ph = 12, pr = 2.4;
     camPlateauShape.moveTo(-pw / 2 + pr, ph / 2);
@@ -103,17 +90,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const plateauMat = new THREE.MeshStandardMaterial({ color: 0x141520, metalness: 0.85, roughness: 0.2 });
     const camPlateauMesh = new THREE.Mesh(camPlateauGeo, plateauMat);
-    // تثبيتها في أعلى يسار ظهر الهاتف
     camPlateauMesh.position.set(-3.5, 14.5, (phoneDepth / 2) + 0.5);
     phoneRoot.add(camPlateauMesh);
 
-    // ==========================================
-    // ج) منظومة العدسات الثلاثية السينمائية (Triple Cine Lenses)
-    // ==========================================
     const lensPositions = [
-      { x: -5.8, y: 17 },  // العدسة العلوية (Main Cinema Lens)
-      { x: -5.8, y: 12 },  // العدسة السفلية (Telephoto Periscope)
-      { x: -1.4, y: 14.5 } // العدسة الجانبية (Ultra-Wide Macro)
+      { x: -5.8, y: 17 },
+      { x: -5.8, y: 12 },
+      { x: -1.4, y: 14.5 }
     ];
 
     const lensRingMat = new THREE.MeshStandardMaterial({ color: 0x222634, metalness: 0.95, roughness: 0.15 });
@@ -126,21 +109,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     lensPositions.forEach((pos) => {
-      // إطار العدسة المعدني البارز
       const ringGeo = new THREE.CylinderGeometry(2.3, 2.5, 1.2, 32);
       ringGeo.rotateX(Math.PI / 2);
       const ringMesh = new THREE.Mesh(ringGeo, lensRingMat);
       ringMesh.position.set(pos.x, pos.y, (phoneDepth / 2) + 1.2);
       phoneRoot.add(ringMesh);
 
-      // بؤبؤ زجاج العدسة العميق (Camera Aperture Eye)
       const glassGeo = new THREE.CylinderGeometry(1.6, 1.6, 0.4, 28);
       glassGeo.rotateX(Math.PI / 2);
       const glassMesh = new THREE.Mesh(glassGeo, lensGlassMat);
       glassMesh.position.set(pos.x, pos.y, (phoneDepth / 2) + 1.7);
       phoneRoot.add(glassMesh);
 
-      // حلقة ديافرام داخلية مضيئة
       const innerApertureGeo = new THREE.RingGeometry(0.7, 1.1, 24);
       const innerApertureMat = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
       const apertureMesh = new THREE.Mesh(innerApertureGeo, innerApertureMat);
@@ -148,7 +128,6 @@ document.addEventListener('DOMContentLoaded', () => {
       phoneRoot.add(apertureMesh);
     });
 
-    // مستشعر LiDAR والفلاش الاستوديو
     const flashGeo = new THREE.CylinderGeometry(0.8, 0.8, 0.4, 16);
     flashGeo.rotateX(Math.PI / 2);
     const flashMesh = new THREE.Mesh(flashGeo, new THREE.MeshBasicMaterial({ color: 0xfff2b2 }));
@@ -161,17 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
     lidarMesh.position.set(-1.4, 11.2, (phoneDepth / 2) + 0.9);
     phoneRoot.add(lidarMesh);
 
-    // ==========================================
-    // د) واجهة الشاشة والجزيرة التفاعلية (Front Screen & Dynamic Island)
-    // ==========================================
     const screenGeo = new THREE.PlaneGeometry(phoneWidth - 1.2, phoneHeight - 1.2);
     const screenMat = new THREE.MeshBasicMaterial({ color: 0x040407 });
     const screenMesh = new THREE.Mesh(screenGeo, screenMat);
     screenMesh.position.set(0, 0, -(phoneDepth / 2) - 0.55);
-    screenMesh.rotation.y = Math.PI; // موجهة نحو الجهة المعاكسة
+    screenMesh.rotation.y = Math.PI;
     phoneRoot.add(screenMesh);
 
-    // كبسولة الجزيرة التفاعلية (Dynamic Island Pill)
     const islandGeo = new THREE.PlaneGeometry(5.2, 1.2);
     const islandMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
     const islandMesh = new THREE.Mesh(islandGeo, islandMat);
@@ -179,7 +154,6 @@ document.addEventListener('DOMContentLoaded', () => {
     islandMesh.rotation.y = Math.PI;
     phoneRoot.add(islandMesh);
 
-    // جزيئات بصرية عائمة تحيط بالهاتف (Floating Optics Dust)
     const dustCount = 180;
     const dustGeo = new THREE.BufferGeometry();
     const dustPos = new Float32Array(dustCount * 3);
@@ -193,9 +167,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const dustField = new THREE.Points(dustGeo, dustMat);
     scene.add(dustField);
 
-    // ==========================================
-    // هـ) التفاعل مع حركة الماوس والسكرول
-    // ==========================================
     let mouseX = 0, mouseY = 0;
     let targetRotX = 0.2, targetRotY = -0.55;
 
@@ -209,7 +180,6 @@ document.addEventListener('DOMContentLoaded', () => {
       currentScroll = window.scrollY;
     });
 
-    // وضعية الهاتف الافتراضية المائلة (Isometric Tech Angle)
     phoneRoot.position.set(20, -2, -10);
     phoneRoot.rotation.set(0.15, -0.6, 0.08);
 
@@ -219,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // حساب زاوية الدوران مع السكرول (الهاتف يلف بزوايا ديناميكية تكشف عدسات الكاميرا)
       const scrollRotation = (currentScroll * 0.0025);
 
       targetRotY = -0.55 + (mouseX * 1.5) + Math.sin(scrollRotation) * 0.8;
@@ -228,14 +197,12 @@ document.addEventListener('DOMContentLoaded', () => {
       phoneRoot.rotation.y += (targetRotY - phoneRoot.rotation.y) * 0.06;
       phoneRoot.rotation.x += (targetRotX - phoneRoot.rotation.x) * 0.06;
 
-      // تمايل عائم خفيف كأنه معلق في الهواء (Cinematic Hover Float)
       phoneRoot.position.y = -2 + Math.sin(elapsed * 1.5) * 1.5 - (currentScroll * 0.02);
 
-      // استجابة تفاعلية لموضع الماوس في الشاشات العريضة
       if (window.innerWidth > 992) {
         phoneRoot.position.x = 22 + (mouseX * 8);
       } else {
-        phoneRoot.position.x = 0; // توسيط الهاتف للهواتف
+        phoneRoot.position.x = 0;
         phoneRoot.position.z = -18;
       }
 
@@ -301,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const storedPortfolio = JSON.parse(localStorage.getItem('rq_portfolio') || 'null');
   const storedPackages = JSON.parse(localStorage.getItem('rq_packages') || 'null');
 
-  // Sync Reels to Carousel
   if (storedPortfolio) {
     const reelsCarousel = document.getElementById('clipsCarousel');
     const activeReels = storedPortfolio.filter(m => m.type === 'reels' && !m.isDeleted);
@@ -337,7 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
     }
 
-    // Sync Stills to Gallery
     const stillsGallery = document.getElementById('stillsGallery');
     const activeStills = storedPortfolio.filter(m => m.type === 'stills' && !m.isDeleted);
 
@@ -355,28 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `).join('');
     }
-  }
-
-  // Hero Featured Reel Setup
-  const heroVideo = document.getElementById('heroFeaturedVideo');
-  const heroTitle = document.getElementById('heroReelTitle');
-  const heroCategory = document.getElementById('heroReelCategory');
-  const audioBtn = document.getElementById('heroAudioToggleBtn');
-
-  if (storedPortfolio && heroVideo) {
-    const featuredReel = storedPortfolio.find(m => m.type === 'reels' && !m.isDeleted);
-    if (featuredReel) {
-      heroVideo.src = featuredReel.url;
-      if (heroTitle) heroTitle.textContent = featuredReel.title;
-      if (heroCategory) heroCategory.textContent = featuredReel.category || 'Commercial Showcase';
-    }
-  }
-
-  if (audioBtn && heroVideo) {
-    audioBtn.addEventListener('click', () => {
-      heroVideo.muted = !heroVideo.muted;
-      audioBtn.textContent = heroVideo.muted ? '🔇' : '🔊';
-    });
   }
 
   /* ==========================================================================
@@ -403,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================================================================
-     6. STILLS FILTER & LIGHTBOX ENGINE
+     6. STILLS FILTER (FIXED: NO CSS-BREAKING INLINE DISPLAY)
      ========================================================================== */
   const filterTabs = document.querySelectorAll('.filter-tab');
   const lightbox = document.getElementById('stillsLightbox');
@@ -415,11 +358,15 @@ document.addEventListener('DOMContentLoaded', () => {
     tab.onclick = () => {
       filterTabs.forEach(t => t.classList.remove('active'));
       tab.classList.add('active');
-      const val = tab.getAttribute('data-filter');
+      const val = (tab.getAttribute('data-filter') || 'all').toLowerCase();
 
       document.querySelectorAll('.still-card').forEach(card => {
-        const cat = card.getAttribute('data-category') || '';
-        card.style.display = (val === 'all' || cat.includes(val)) ? 'flex' : 'none';
+        const cat = (card.getAttribute('data-category') || '').toLowerCase();
+        if (val === 'all' || cat.includes(val)) {
+          card.classList.remove('is-hidden');
+        } else {
+          card.classList.add('is-hidden');
+        }
       });
     };
   });
@@ -451,7 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lightbox) lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
 
   /* ==========================================================================
-     7. ESTIMATOR (JOD PACKAGES) & DYNAMIC BREAKDOWN
+     7. ESTIMATOR (JOD PACKAGES) WITHOUT ADD-ONS
      ========================================================================== */
   const defaultPackages = {
     starter: {
@@ -507,15 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const pkg = packages[currentPkg] || packages.starter;
     let total = pkg.price + rushSurplus;
 
-    const addonScript = document.getElementById('addonScript');
-    const addonVoiceover = document.getElementById('addonVoiceover');
-    const addonExtraStills = document.getElementById('addonExtraStills');
-
-    let addons = [];
-    if (addonScript && addonScript.checked) { total += 15; addons.push('Hook Scripting'); }
-    if (addonVoiceover && addonVoiceover.checked) { total += 20; addons.push('Studio Voiceover'); }
-    if (addonExtraStills && addonExtraStills.checked) { total += 15; addons.push('Matching Grid Covers'); }
-
     if (estPrice) estPrice.textContent = `${total} JOD`;
 
     if (estList) {
@@ -523,11 +461,6 @@ document.addEventListener('DOMContentLoaded', () => {
       (pkg.deliverables || []).forEach(d => {
         const li = document.createElement('li');
         li.innerHTML = `<span class="check-icon">✓</span> ${d}`;
-        estList.appendChild(li);
-      });
-      addons.forEach(a => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="check-icon">✓</span> [OPTIONAL] ${a}`;
         estList.appendChild(li);
       });
     }
@@ -555,10 +488,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   });
 
-  document.querySelectorAll('.addon-item input').forEach(input => {
-    input.onchange = updateEstimator;
-  });
-
   const lockEstimateBtn = document.getElementById('lockEstimateBtn');
   if (lockEstimateBtn) {
     lockEstimateBtn.onclick = () => {
@@ -573,7 +502,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateEstimator();
 
   /* ==========================================================================
-     8. CASE STUDY OVERLAY
+     8. CASE STUDY OVERLAY (FIXED VIDEO PLAYBACK)
      ========================================================================== */
   const projectOverlay = document.getElementById('projectPageOverlay');
   const closeProjectBtn = document.getElementById('closeProjectPageBtn');
@@ -581,37 +510,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const attachCaseStudyClicks = () => {
     document.querySelectorAll('.clip-card').forEach(card => {
-      card.onclick = () => {
-        document.getElementById('projTitle').textContent = card.dataset.title;
-        document.getElementById('projCategory').textContent = card.dataset.category;
-        document.getElementById('projViews').textContent = card.dataset.views;
-        document.getElementById('projObjective').textContent = card.dataset.objective;
-        document.getElementById('projHook').textContent = card.dataset.hook;
-        document.getElementById('projRoi').textContent = card.dataset.roi;
-        document.getElementById('projGear').textContent = card.dataset.gear;
-        document.getElementById('projSoftware').textContent = card.dataset.software;
-        document.getElementById('projRetention').textContent = card.dataset.retention;
+      // إزالة أي تكرار للأحداث
+      card.onclick = null;
+      card.onclick = function() {
+        document.getElementById('projTitle').textContent = this.dataset.title || 'Commercial Cut';
+        document.getElementById('projCategory').textContent = this.dataset.category || 'Reel';
+        document.getElementById('projViews').textContent = this.dataset.views || 'Organic';
+        document.getElementById('projObjective').textContent = this.dataset.objective || 'High conversion vertical cut.';
+        document.getElementById('projHook').textContent = this.dataset.hook || 'Immediate pattern interrupt.';
+        document.getElementById('projRoi').textContent = this.dataset.roi || 'Significant organic conversion acceleration.';
+        document.getElementById('projGear').textContent = this.dataset.gear || 'Sony FX3 Cinema Line';
+        document.getElementById('projSoftware').textContent = this.dataset.software || 'DaVinci Resolve Studio';
+        document.getElementById('projRetention').textContent = this.dataset.retention || '85%+ Hold';
 
-        projectVideo.src = card.dataset.videoSrc;
-        projectVideo.play().catch(() => {});
+        // جلب مسار الفيديو الصحيح سواء من الخاصية أو من وسم الفيديو الداخلي
+        const innerVideo = this.querySelector('video source') || this.querySelector('video');
+        const videoSrc = this.getAttribute('data-video-src') || (innerVideo ? (innerVideo.src || innerVideo.getAttribute('src')) : '');
+
+        if (projectVideo && videoSrc) {
+          projectVideo.pause();
+          projectVideo.muted = true; // إجباري للسماح بالتشغيل بدون حظر من المتصفح
+          projectVideo.setAttribute('playsinline', '');
+          projectVideo.src = videoSrc;
+          projectVideo.load();
+          
+          // تأكيد التشغيل
+          const playPromise = projectVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              // إذا منعه المتصفح، سيتمكن المستخدم من تشغيله يدوياً من زر play لأنه يحتوي على controls
+            });
+          }
+        }
+
         projectOverlay.classList.add('active');
         document.body.style.overflow = 'hidden';
       };
     });
   };
+
+  // تشغيل الربط فوراً
   attachCaseStudyClicks();
+  // وإعادة تشغيله بعد ثانية لضمان التقاط الكروت لو كانت مولدة ديناميكياً
+  setTimeout(attachCaseStudyClicks, 1000);
 
   const closeCaseStudy = () => {
     if (projectOverlay) {
       projectOverlay.classList.remove('active');
       document.body.style.overflow = '';
-      projectVideo.pause();
-      projectVideo.src = '';
+      if (projectVideo) {
+        projectVideo.pause();
+        projectVideo.src = '';
+      }
     }
   };
   if (closeProjectBtn) closeProjectBtn.onclick = closeCaseStudy;
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeCaseStudy(); });
-
   /* ==========================================================================
      9. PRODUCTION CALENDAR & WHATSAPP DISPATCH
      ========================================================================== */
@@ -714,7 +668,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (nextMonth) nextMonth.onclick = () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCal(); };
   renderCal();
 
-  // Booking Form Submit & WhatsApp Dispatch
   const bookingForm = document.getElementById('bookingForm');
   const confirmModal = document.getElementById('bookingConfirmModal');
   const waBtn = document.getElementById('whatsappActionBtn');
@@ -734,6 +687,25 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const dateStr = `${monthNames[currentDate.getMonth()]} ${selectedDay}, ${currentDate.getFullYear()}`;
+
+      // --- حفظ الحجز فوراً في Firebase Realtime Database ---
+      if (typeof db !== 'undefined') {
+        db.ref('bookings').push({
+          clientName: name,
+          phone: document.getElementById('clientPhone').value.trim(),
+          package: type,
+          date: dateStr,
+          timeSlot: activeTimeSlot,
+          brief: brief,
+          status: 'pending',
+          createdAt: new Date().toISOString()
+        }).then(() => {
+          console.log("Booking saved to Firebase Cloud 24/7!");
+        }).catch(err => {
+          console.error("Firebase Error:", err);
+        });
+      }
+
       if (pill) pill.textContent = `${name} // ${dateStr} @ ${activeTimeSlot} // ${type}`;
 
       const msg = encodeURIComponent(
@@ -797,3 +769,4 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 });
+
