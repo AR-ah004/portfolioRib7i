@@ -2007,3 +2007,215 @@ nav {
   display: flex !important; /* ضمان بقاء البطاقة كـ Flex عمودي دون تكسر */
   flex-direction: column;
 }
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS OVERHAUL (100% CLEAN LAYOUT)
+   ========================================================================== */
+
+/* منع التمرير العرضي نهائياً */
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden !important;
+}
+
+/* إخفاء المؤشر المخصص في الهواتف حتى لا يعلق اللمس */
+@media (hover: none) and (pointer: coarse) {
+  #cursorGlow,
+  #viewfinderCursor,
+  .cursor-dot {
+    display: none !important;
+  }
+}
+
+/* الشاشات المتوسطة والأجهزة اللوحية (أقل من 992px) */
+@media (max-width: 992px) {
+  .container {
+    padding: 0 18px;
+  }
+
+  /* 1. Header & Navigation */
+  nav {
+    height: 64px;
+  }
+
+  .nav-links {
+    display: none; /* إخفاء الروابط الطويلة وترك زر الحجز */
+  }
+
+  /* 2. Hero Section */
+  .hero-cinematic {
+    padding: 40px 0 20px;
+    min-height: auto;
+  }
+
+  .hero-cine-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 32px;
+  }
+
+  .status-badge-minimal {
+    margin: 0 auto 16px;
+    font-size: 0.65rem;
+    padding: 5px 12px;
+  }
+
+  .hero-cine-title {
+    font-size: clamp(2.5rem, 8vw, 3.6rem);
+    letter-spacing: -1px;
+    margin-bottom: 14px;
+  }
+
+  .hero-cine-sub {
+    font-size: 0.95rem;
+    max-width: 100%;
+    margin: 0 auto 20px;
+  }
+
+  .hero-trinity-tags {
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .tag-pill {
+    font-size: 0.72rem;
+    padding: 6px 12px;
+  }
+
+  .hero-actions-group {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .btn-cine-primary,
+  .btn-cine-ghost {
+    width: 100%;
+    max-width: 280px;
+    padding: 12px 20px;
+    font-size: 0.88rem;
+    text-align: center;
+  }
+
+  /* منصة شخصية ربحي 3D في الهاتف */
+  .hero-stage-wrapper {
+    height: auto;
+    width: 100%;
+  }
+
+  .character-hologram-card {
+    max-width: 290px;
+    height: 380px;
+    margin: 0 auto;
+    border-radius: 20px;
+  }
+
+  /* 3. Section Titles */
+  .section-header-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  /* 4. Estimator Section */
+  .estimator-card {
+    padding: 20px 16px;
+  }
+
+  .estimator-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .format-cards-grid,
+  .speed-toggle-box {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .estimator-summary-box {
+    padding: 20px;
+  }
+
+  .price-figure {
+    font-size: 2.2rem;
+  }
+
+  /* 5. Production Schedule / Calendar */
+  .calendar-booking-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .calendar-card,
+  .booking-slot-card {
+    padding: 20px 16px;
+  }
+
+  .time-slots-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 6. Case Study Overlay (المودال في الهاتف) */
+  .project-page-content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .project-video-viewport {
+    max-width: 100%;
+  }
+
+  .proj-specs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 7. Reviews Grid */
+  .reviews-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* شاشات الهواتف الصغيرة (أقل من 480px) */
+@media (max-width: 480px) {
+  .hud-telemetry-ribbon {
+    font-size: 0.6rem;
+    padding: 4px 0;
+  }
+
+  .brand-text {
+    font-size: 1rem;
+  }
+
+  .brand-badge {
+    display: none;
+  }
+
+  .character-hologram-card {
+    max-width: 260px;
+    height: 350px;
+  }
+
+  .cal-day {
+    font-size: 0.78rem;
+    border-radius: 6px;
+  }
+
+  .time-slots-list {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-middle {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .footer-contact-pills li a {
+    width: 100%;
+  }
+}
